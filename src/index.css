@@ -1,1 +1,6 @@
 @import 'tailwindcss';
+:root {
+  --color-background: #FFFFFF; /* fondo general */
+  --color-textbox: #14244E;    /* color para campos de texto */
+  --color-rwa: #0058FF;        /* azul principal / marca RWA */
+}
