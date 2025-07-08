@@ -81,7 +81,7 @@ const Hero = () => {
           animate='animate'
           className='text-4xl font-bold md:text-5xl lg:text-6xl md:px-30'
         >
-          Discover Oremium Services from{' '}
+          Discover Premium Services from{' '}
           <span className='text-rwa'>RWA Inc</span> & Trusted Partners
         </motion.h1>
 
