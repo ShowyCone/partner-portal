@@ -2,17 +2,19 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaPinterestP } from 'react-icons/f
 
 export default function Footer() {
   return (
-    <footer className="relative bg-[#091221] text-white overflow-hidden">
+    <footer className="relative text-white overflow-hidden px-2 sm:px-8 lg:px-10">
       <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 bg-blue-900/20 backdrop-blur-md">
+        </div>
         <img
           src="/overlayimage.webp"
           alt="Background overlay"
-          className="w-full h-full object-cover opacity-20 blur-md mix-blend-screen pointer-events-none"
+          className="w-full h-full object-cover"
         />
       </div>
 
       {/* Contenido del footer */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-10 text-sm">
+      <div className="relative z-10 max-w-[90rem] mx-auto py-26 grid grid-cols-1 md:grid-cols-4 gap-10 text-sm">
         {/* Logo + descripción */}
         <div className="space-y-4">
           <img
@@ -32,16 +34,16 @@ export default function Footer() {
         </div>
 
         {/* Help */}
-        <div className="space-y-2">
-          <h3 className="text-blue-400 font-semibold">Help</h3>
+        <div className="space-y-4">
+          <h3 className="text-rwa font-semibold">Help</h3>
           <p className="hover:text-gray-300 cursor-pointer">Support Center</p>
           <p className="hover:text-gray-300 cursor-pointer">Payment Gateway</p>
           <p className="hover:text-gray-300 cursor-pointer">FAQ</p>
         </div>
 
         {/* RWA Inc */}
-        <div className="space-y-2">
-          <h3 className="text-blue-400 font-semibold">RWA Inc</h3>
+        <div className="space-y-4">
+          <h3 className="text-rwa font-semibold">RWA Inc</h3>
           <p className="hover:text-gray-300 cursor-pointer">About us</p>
           <p className="hover:text-gray-300 cursor-pointer">SRWA</p>
           <p className="hover:text-gray-300 cursor-pointer">Media Kit</p>
@@ -49,8 +51,8 @@ export default function Footer() {
         </div>
 
         {/* Partners */}
-        <div className="space-y-2">
-          <h3 className="text-blue-400 font-semibold">Partners</h3>
+        <div className="space-y-4">
+          <h3 className="text-rwa font-semibold">Partners</h3>
           <p className="hover:text-gray-300 cursor-pointer">Be a provider, apply now</p>
           <p className="hover:text-gray-300 cursor-pointer">List of Partners</p>
           <p className="hover:text-gray-300 cursor-pointer">Find a Partner</p>
@@ -58,9 +60,9 @@ export default function Footer() {
       </div>
 
       {/* Línea inferior */}
-      <div className="relative z-10 border-t border-white/10 mx-6">
+      <div className="relative z-10 border-t border-rwa mx-12">
         <p className="text-center py-6 text-xs text-gray-400">
-          © 2025 <span className="text-blue-400">RWA Inc.</span> All rights reserved.
+          © 2025 <span className="text-rwa">RWA Inc.</span> All rights reserved.
         </p>
       </div>
     </footer>
