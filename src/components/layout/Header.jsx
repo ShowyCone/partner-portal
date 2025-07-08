@@ -26,8 +26,8 @@ const Header = () => {
             to='/'
             className={`cursor-pointer transition-colors duration-200 font-medium ${
               location.pathname === '/'
-                ? 'text-blue-600'
-                : 'text-gray-700 hover:text-blue-600'
+                ? 'text-rwa'
+                : 'text-gray-700 hover:text-rwa'
             }`}
           >
             Home
@@ -36,8 +36,8 @@ const Header = () => {
             to='/discover'
             className={`cursor-pointer transition-colors duration-200 font-medium ${
               location.pathname === '/discover'
-                ? 'text-blue-600'
-                : 'text-gray-700 hover:text-blue-600'
+                ? 'text-rwa'
+                : 'text-gray-700 hover:text-rwa'
             }`}
           >
             Discover
@@ -46,10 +46,10 @@ const Header = () => {
       </div>
 
       <div className='flex items-center space-x-4'>
-        <button className='text-gray-700 hover:text-blue-600 cursor-pointer transition-colors duration-200 font-medium'>
+        <button className='text-gray-700 hover:text-rwa cursor-pointer transition-colors duration-200 font-medium'>
           Sign In
         </button>
-        <button className='bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium'>
+        <button className='bg-rwa text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium'>
           Sign Up
         </button>
       </div>
