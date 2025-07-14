@@ -209,16 +209,19 @@ const ServicesSection = () => {
                 />
                 <button
                   onClick={() => toggleFavorite(service.id)}
-                  className={`absolute top-0 right-0 p-3 z-10 transition-all duration-300 backdrop-blur-3xl bg-black/20 rounded-bl-lg ${
+                  className={`absolute cursor-pointer top-0 right-0 p-3 z-10 backdrop-blur-3xl bg-black/20 rounded-bl-lg group ${
                     favorites[service.id] ? 'text-rwa' : 'text-white'
-                  } hover:scale-125 active:scale-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.7)]`}
+                  } active:scale-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.7)]`}
                   aria-label={
                     favorites[service.id]
-                      ? 'Quitar de favoritos'
-                      : 'Añadir a favoritos'
+                      ? 'Remove from favorites'
+                      : 'Add to favorites'
                   }
                 >
-                  <FaRegHeart size={22} />
+                  <FaRegHeart
+                    className='group-hover:scale-125 transition-all duration-300'
+                    size={22}
+                  />
                 </button>
               </div>
 
