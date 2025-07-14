@@ -63,10 +63,10 @@ const Hero = () => {
               custom={1}
               variants={fadeInAnimation}
               onClick={() => setActiveCategory(category)}
-              className={`px-5 py-3 text-lg font-medium rounded-3xl transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-none ${
+              className={`px-5 py-2 text-lg rounded-3xl cursor-pointer transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-none ${
                 activeCategory === category
                   ? 'bg-rwa'
-                  : 'bg-rwa/40 hover:bg-rwa/60'
+                  : 'bg-rwa/20 hover:bg-rwa/50'
               }`}
             >
               {category}
@@ -125,7 +125,7 @@ const Hero = () => {
             {popularTags.map((tag) => (
               <button
                 key={tag}
-                className='px-4 py-1.5 text-sm text-white border border-white/80 rounded-3xl hover:bg-white/10 transition-colors duration-300'
+                className='px-4 cursor-pointer py-1.5 text-sm text-white border border-white/80 rounded-3xl hover:bg-white/10 transition-colors duration-300'
               >
                 {tag}
               </button>
