@@ -164,7 +164,7 @@ const ServicesSection = () => {
 
   return (
     <motion.section
-      className='py-6 px-2 sm:px-8 lg:px-10'
+      className='py-6 px-2 sm:px-8 lg:px-10 w-full overflow-hidden'
       initial='hidden'
       whileInView='visible'
       viewport={{ once: true, amount: 0.2 }}
