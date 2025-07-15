@@ -1,0 +1,108 @@
+const servicesData = [
+  {
+    id: 1,
+    title: 'Smart Contract Development',
+    rating: 4.9,
+    price: 1250,
+    tag: 'Solidity',
+    description:
+      'Creation and auditing of smart contracts on the Ethereum network to ensure security and efficiency.',
+    siteName: 'CryptoDevs',
+    siteUrl: '#',
+    image: '/container.webp',
+    favorite: false,
+  },
+  {
+    id: 2,
+    title: 'Web3 Security Audit',
+    rating: 5.0,
+    price: 850,
+    tag: 'Security',
+    description:
+      'Comprehensive vulnerability analysis of dApps and protocols to prevent attacks and protect digital assets.',
+    siteName: 'SecureChain',
+    siteUrl: '#',
+    image: '/rectangle.webp',
+    favorite: true,
+  },
+  {
+    id: 3,
+    title: 'dApp Interface Design',
+    rating: 4.8,
+    price: 980,
+    tag: 'UI/UX',
+    description:
+      'Design of intuitive and attractive user interfaces for decentralized applications, optimized for adoption.',
+    siteName: 'PixelPerfect',
+    siteUrl: '#',
+    image: '/rectangle_9.webp',
+    favorite: false,
+  },
+  {
+    id: 4,
+    title: 'Oracle Integration',
+    rating: 4.7,
+    price: 600,
+    tag: 'Chainlink',
+    description:
+      'Connecting smart contracts with real-world data through decentralized oracles like Chainlink.',
+    siteName: 'CryptoDevs',
+    siteUrl: '#',
+    image: '/container.webp',
+    favorite: false,
+  },
+  {
+    id: 5,
+    title: 'ERC-20 Token Creation',
+    rating: 4.9,
+    price: 720,
+    tag: 'Tokens',
+    description:
+      'Development and deployment of custom ERC-20 standard fungible tokens for projects and ecosystems.',
+    siteName: 'TokenFactory',
+    siteUrl: '#',
+    image: '/rectangle_9.webp',
+    favorite: true,
+  },
+  {
+    id: 6,
+    title: 'Blockchain Consulting',
+    rating: 5.0,
+    price: 1500,
+    tag: 'Strategy',
+    description:
+      'Strategic advisory for companies looking to implement blockchain and Web3 solutions in their business models.',
+    siteName: 'SecureChain',
+    siteUrl: '#',
+    image: '/rectangle.webp',
+    favorite: false,
+  },
+  {
+    id: 7,
+    title: 'NFT Marketplace Development',
+    rating: 4.8,
+    price: 2500,
+    tag: 'NFT',
+    description:
+      'Building marketplace platforms for buying, selling and exchanging Non-Fungible Tokens (NFTs).',
+    siteName: 'PixelPerfect',
+    siteUrl: '#',
+    image: '/container.webp',
+    favorite: false,
+  },
+  {
+    id: 8,
+    title: 'DeFi Treasury Management',
+    rating: 4.9,
+    price: 1800,
+    tag: 'DeFi',
+    description:
+      'Strategies and tools for optimized management of digital assets in decentralized finance protocols.',
+    siteName: 'TokenFactory',
+    siteUrl: '#',
+    image: '/rectangle.webp',
+    favorite: false,
+  },
+]
+
+export default servicesData
