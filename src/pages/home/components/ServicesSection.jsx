@@ -19,16 +19,6 @@ const sectionVariants = {
 
 const ServicesSection = () => {
   const [filter, setFilter] = useState('popular')
-  const [favorites, setFavorites] = useState(
-    servicesData.reduce((acc, service) => {
-      acc[service.id] = service.favorite
-      return acc
-    }, {})
-  )
-
-  const toggleFavorite = (id) => {
-    setFavorites((prev) => ({ ...prev, [id]: !prev[id] }))
-  }
 
   const sortedServices = useMemo(() => {
     const services = [...servicesData]
@@ -74,13 +64,7 @@ const ServicesSection = () => {
 
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'>
           {sortedServices.map((service, index) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
-              index={index}
-              isFavorite={favorites[service.id]}
-              onToggleFavorite={toggleFavorite}
-            />
+            <ServiceCard key={service.id} service={service} index={index} />
           ))}
         </div>
 
