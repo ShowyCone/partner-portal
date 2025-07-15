@@ -9,7 +9,7 @@ const BannerSection = () => {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
         viewport={{ once: true }}
-        className='relative z-10 flex flex-col items-center text-center gap-6 py-16 md:py-24 px-4 md:px-20 bg-red-500 rounded-xl overflow-hidden'
+        className='relative z-10 flex flex-col items-center text-center gap-6 py-16 md:py-24 px-4 md:px-20 rounded-xl overflow-hidden'
       >
         <img
           src='/backgroundbanner.webp'

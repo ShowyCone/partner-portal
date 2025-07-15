@@ -15,12 +15,16 @@ const cardVariants = {
   }),
 }
 
-const ServiceCard = ({ service, index }) => {
+const ServiceCard = ({ service, index, variant = 'default' }) => {
   const [isFavorite, setIsFavorite] = useState(service.favorite || false)
+
+  const isSuggested = variant === 'suggested'
 
   return (
     <motion.div
-      className='bg-white rounded-lg shadow-xl flex flex-col transition-transform duration-300 hover:-translate-y-2'
+      className={`bg-white shadow-xl flex flex-col transition-transform duration-300 hover:-translate-y-2 overflow-hidden ${
+        isSuggested ? 'rounded-[3rem]' : 'rounded-lg'
+      }`}
       custom={index}
       initial='hidden'
       whileInView='visible'
@@ -35,9 +39,9 @@ const ServiceCard = ({ service, index }) => {
         />
         <button
           onClick={() => setIsFavorite((prev) => !prev)}
-          className={`absolute cursor-pointer top-0 right-0 p-3 z-10 backdrop-blur-3xl bg-black/20 rounded-bl-lg group ${
+          className={`absolute cursor-pointer top-0 right-0 z-10 backdrop-blur-3xl bg-black/20 group active:scale-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.7)] ${
             isFavorite ? 'text-rwa' : 'text-white'
-          } active:scale-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.7)]`}
+          } ${isSuggested ? 'p-4 rounded-bl-4xl' : 'rounded-bl-lg p-3'}`}
           aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
         >
           <FaRegHeart
@@ -67,36 +71,46 @@ const ServiceCard = ({ service, index }) => {
           </div>
         </div>
 
-        <div className='flex items-center gap-2 mt-2'>
+        <div
+          className={
+            isSuggested
+              ? 'flex flex-col items-center gap-1 mt-2'
+              : 'flex items-center gap-2 mt-2'
+          }
+        >
           <p className='font-bold text-gray-900 text-base'>${service.price}</p>
           <span className='bg-rwa/10 text-rwa text-xs font-semibold px-2 py-0.5 rounded-full'>
             {service.tag}
           </span>
         </div>
 
-        <div className='mt-3 flex-grow'>
-          <div className='relative group w-fit'>
-            <p className='text-gray-600 text-sm line-clamp-2'>
-              {service.description}
-            </p>
-            <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-sm bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none z-10'>
-              {service.description}
-              <div className='absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-900' />
+        {isSuggested ? null : (
+          <div className='mt-3 flex-grow'>
+            <div className='relative group w-fit'>
+              <p className='text-gray-600 text-sm line-clamp-2'>
+                {service.description}
+              </p>
+              <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-sm bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none z-10'>
+                {service.description}
+                <div className='absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-900' />
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
-        <div className='border-t border-gray-200 mt-4 pt-3 flex justify-between items-center text-sm text-gray-500'>
-          <span>{service.siteName}</span>
-          <a
-            href={service.siteUrl}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='font-semibold text-rwa hover:underline'
-          >
-            Visit Site
-          </a>
-        </div>
+        {isSuggested ? null : (
+          <div className='border-t border-gray-200 mt-4 pt-3 flex justify-between items-center text-sm text-gray-500'>
+            <span>{service.siteName}</span>
+            <a
+              href={service.siteUrl}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='font-semibold text-rwa hover:underline'
+            >
+              Visit Site
+            </a>
+          </div>
+        )}
       </div>
     </motion.div>
   )
