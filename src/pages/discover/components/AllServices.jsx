@@ -91,7 +91,7 @@ const AllServices = () => {
   }, [sortBy, category, itemsPerPage])
 
   return (
-    <section className='py-20 px-4 md:px-10 max-w-screen-xl mx-auto overflow-hidden'>
+    <section className='pb-5 px-4 md:px-10 max-w-screen-xl mx-auto overflow-hidden'>
       {/* Filters & Ordering */}
       <div className='flex justify-between flex-wrap gap-4 items-center mb-8'>
         {/* Left selects */}
