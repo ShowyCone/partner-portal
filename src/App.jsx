@@ -5,6 +5,7 @@ import Home from './pages/home/Home'
 import AboutUs from './pages/aboutus/AboutUs'
 import Discover from './pages/discover/Discover'
 import NotificationBanner from './components/ui/NotificationBanner'
+import Login from './pages/auth/Login'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/discover' element={<Discover />} />
         <Route path='/about' element={<AboutUs />} />
+        <Route path='/login' element={<Login />} />
       </Routes>
       <Footer />
     </>
