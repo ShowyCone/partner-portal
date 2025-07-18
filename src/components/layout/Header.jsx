@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Link, useLocation } from 'react-router'
+import { Link, useLocation, NavLink } from 'react-router'
 
 const Header = () => {
   const location = useLocation()
@@ -22,36 +22,43 @@ const Header = () => {
         </Link>
 
         <nav className='flex items-center space-x-6'>
-          <Link
+          <NavLink
             to='/'
-            className={`cursor-pointer transition-colors duration-200 font-medium ${
-              location.pathname === '/'
-                ? 'text-rwa'
-                : 'text-gray-700 hover:text-rwa'
-            }`}
+            className={({ isActive }) =>
+              `cursor-pointer transition-colors duration-200 font-medium ${
+                isActive ? 'text-rwa' : 'text-gray-700 hover:text-rwa'
+              }`
+            }
           >
             Home
-          </Link>
-          <Link
+          </NavLink>
+
+          <NavLink
             to='/discover'
-            className={`cursor-pointer transition-colors duration-200 font-medium ${
-              location.pathname === '/discover'
-                ? 'text-rwa'
-                : 'text-gray-700 hover:text-rwa'
-            }`}
+            className={({ isActive }) =>
+              `cursor-pointer transition-colors duration-200 font-medium ${
+                isActive ? 'text-rwa' : 'text-gray-700 hover:text-rwa'
+              }`
+            }
           >
             Discover
-          </Link>
+          </NavLink>
         </nav>
       </div>
 
       <div className='flex items-center space-x-4'>
-        <button className='text-gray-700 hover:text-rwa cursor-pointer transition-colors duration-200 font-medium'>
+        <Link
+          to='/login'
+          className='text-gray-700 hover:text-rwa cursor-pointer transition-colors duration-200 font-medium'
+        >
           Sign In
-        </button>
-        <button className='bg-rwa text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium'>
+        </Link>
+        <Link
+          to='/login'
+          className='bg-rwa text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium'
+        >
           Sign Up
-        </button>
+        </Link>
       </div>
     </motion.header>
   )

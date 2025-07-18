@@ -129,7 +129,7 @@ export default function LoginForm({
         ) : (
           <p className='text-center text-sm text-gray-600'>
             Are you a partner?{' '}
-            <Link to='' className='text-rwa underline'>
+            <Link to='/apply' className='text-rwa underline'>
               Login as provider.
             </Link>
           </p>
