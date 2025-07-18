@@ -22,9 +22,7 @@ const ServiceCard = ({ service, index, variant = 'default' }) => {
 
   return (
     <motion.div
-      className={`bg-white shadow-xl flex flex-col transition-transform duration-300 hover:-translate-y-2 overflow-hidden ${
-        isSuggested ? 'rounded-[3rem]' : 'rounded-lg'
-      }`}
+      className='rounded-lg bg-white shadow-xl flex flex-col transition-transform duration-300 hover:-translate-y-2 overflow-hidden'
       custom={index}
       initial='hidden'
       whileInView='visible'
@@ -39,9 +37,9 @@ const ServiceCard = ({ service, index, variant = 'default' }) => {
         />
         <button
           onClick={() => setIsFavorite((prev) => !prev)}
-          className={`absolute cursor-pointer top-0 right-0 z-10 backdrop-blur-3xl bg-black/20 group active:scale-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.7)] ${
+          className={`absolute cursor-pointer top-0 right-0 z-10 backdrop-blur-3xl bg-black/20 group active:scale-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.7)] rounded-bl-lg p-3 ${
             isFavorite ? 'text-rwa' : 'text-white'
-          } ${isSuggested ? 'p-4 rounded-bl-4xl' : 'rounded-bl-lg p-3'}`}
+          }`}
           aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
         >
           <FaRegHeart
