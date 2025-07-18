@@ -96,6 +96,7 @@ const Hero = () => {
           and more powered by a network of verified professionals.
         </motion.p>
 
+        {/* search bar */}
         <motion.div
           custom={4}
           variants={fadeInAnimation}

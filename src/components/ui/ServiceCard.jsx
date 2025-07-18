@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FaRegHeart, FaStar } from 'react-icons/fa'
+import { Link } from 'react-router'
 
 const cardVariants = {
   hidden: { opacity: 0, scale: 0.95 },
@@ -21,96 +22,102 @@ const ServiceCard = ({ service, index, variant = 'default' }) => {
   const isSuggested = variant === 'suggested'
 
   return (
-    <motion.div
-      className='rounded-lg bg-white shadow-xl flex flex-col transition-transform duration-300 hover:-translate-y-2 overflow-hidden'
-      custom={index}
-      initial='hidden'
-      whileInView='visible'
-      viewport={{ once: true, amount: 0.5 }}
-      variants={cardVariants}
-    >
-      <div className='relative h-48 rounded-t-lg overflow-hidden'>
-        <img
-          src={service.image}
-          alt={service.title}
-          className='w-full h-full object-cover'
-        />
-        <button
-          onClick={() => setIsFavorite((prev) => !prev)}
-          className={`absolute cursor-pointer top-0 right-0 z-10 backdrop-blur-3xl bg-black/20 group active:scale-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.7)] rounded-bl-lg p-3 ${
-            isFavorite ? 'text-rwa' : 'text-white'
-          }`}
-          aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-        >
-          <FaRegHeart
-            className='group-hover:scale-125 transition-all duration-300'
-            size={22}
+    <Link to={`/service?id=${service.id}`} className='block'>
+      <motion.div
+        className='rounded-lg bg-white shadow-xl flex flex-col transition-transform duration-300 hover:-translate-y-2 overflow-hidden'
+        custom={index}
+        initial='hidden'
+        whileInView='visible'
+        viewport={{ once: true, amount: 0.5 }}
+        variants={cardVariants}
+      >
+        <div className='relative h-48 rounded-t-lg overflow-hidden'>
+          <img
+            src={service.image}
+            alt={service.title}
+            className='w-full h-full object-cover'
           />
-        </button>
-      </div>
-
-      <div className='p-4 flex flex-col flex-grow text-gray-800'>
-        <div className='flex justify-between items-start gap-2'>
-          <div className='relative group flex-1 min-w-0'>
-            <h3 className='font-bold text-base text-rwa truncate'>
-              {service.title}
-            </h3>
-
-            {/* Tooltip with full title */}
-            <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-xs bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none z-10'>
-              {service.title}
-              <div className='absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-900' />
-            </div>
-          </div>
-
-          <div className='flex items-center gap-1 flex-shrink-0'>
-            <FaStar className='text-rwa text-lg' />
-            <span className='text-lg'>{service.rating.toFixed(1)}</span>
-          </div>
+          <button
+            onClick={() => setIsFavorite((prev) => !prev)}
+            className={`absolute cursor-pointer top-0 right-0 z-10 backdrop-blur-3xl bg-black/20 group active:scale-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.7)] rounded-bl-lg p-3 ${
+              isFavorite ? 'text-rwa' : 'text-white'
+            }`}
+            aria-label={
+              isFavorite ? 'Remove from favorites' : 'Add to favorites'
+            }
+          >
+            <FaRegHeart
+              className='group-hover:scale-125 transition-all duration-300'
+              size={22}
+            />
+          </button>
         </div>
 
-        <div
-          className={
-            isSuggested
-              ? 'flex flex-col items-center gap-1 mt-2'
-              : 'flex items-center gap-2 mt-2'
-          }
-        >
-          <p className='font-bold text-gray-900 text-base'>${service.price}</p>
-          <span className='bg-rwa/10 text-rwa text-xs font-semibold px-2 py-0.5 rounded-full'>
-            {service.tag}
-          </span>
-        </div>
+        <div className='p-4 flex flex-col flex-grow text-gray-800'>
+          <div className='flex justify-between items-start gap-2'>
+            <div className='relative group flex-1 min-w-0'>
+              <h3 className='font-bold text-base text-rwa truncate'>
+                {service.title}
+              </h3>
 
-        {isSuggested ? null : (
-          <div className='mt-3 flex-grow'>
-            <div className='relative group w-fit'>
-              <p className='text-gray-600 text-sm line-clamp-2'>
-                {service.description}
-              </p>
-              <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-sm bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none z-10'>
-                {service.description}
+              {/* Tooltip with full title */}
+              <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-xs bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none z-10'>
+                {service.title}
                 <div className='absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-900' />
               </div>
             </div>
-          </div>
-        )}
 
-        {isSuggested ? null : (
-          <div className='border-t border-gray-200 mt-4 pt-3 flex justify-between items-center text-sm text-gray-500'>
-            <span>{service.siteName}</span>
-            <a
-              href={service.siteUrl}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='font-semibold text-rwa hover:underline'
-            >
-              Visit Site
-            </a>
+            <div className='flex items-center gap-1 flex-shrink-0'>
+              <FaStar className='text-rwa text-lg' />
+              <span className='text-lg'>{service.rating.toFixed(1)}</span>
+            </div>
           </div>
-        )}
-      </div>
-    </motion.div>
+
+          <div
+            className={
+              isSuggested
+                ? 'flex flex-col items-center gap-1 mt-2'
+                : 'flex items-center gap-2 mt-2'
+            }
+          >
+            <p className='font-bold text-gray-900 text-base'>
+              ${service.price}
+            </p>
+            <span className='bg-rwa/10 text-rwa text-xs font-semibold px-2 py-0.5 rounded-full'>
+              {service.tag}
+            </span>
+          </div>
+
+          {isSuggested ? null : (
+            <div className='mt-3 flex-grow'>
+              <div className='relative group w-fit'>
+                <p className='text-gray-600 text-sm line-clamp-2'>
+                  {service.description}
+                </p>
+                <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-sm bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none z-10'>
+                  {service.description}
+                  <div className='absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-900' />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isSuggested ? null : (
+            <div className='border-t border-gray-200 mt-4 pt-3 flex justify-between items-center text-sm text-gray-500'>
+              <span>{service.siteName}</span>
+              <a
+                href={service.siteUrl}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='font-semibold text-rwa hover:underline'
+              >
+                Visit Site
+              </a>
+            </div>
+          )}
+        </div>
+      </motion.div>
+    </Link>
   )
 }
 

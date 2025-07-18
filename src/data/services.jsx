@@ -3,6 +3,7 @@ const servicesData = [
     id: 1,
     title: 'Smart Contract Development',
     rating: 4.9,
+    reviews: 112,
     price: 1250,
     tag: 'Solidity',
     description:
@@ -10,12 +11,18 @@ const servicesData = [
     siteName: 'CryptoDevs',
     siteUrl: '#',
     image: '/container.webp',
+    includes: [
+      'Custom Solidity development',
+      'Comprehensive unit testing',
+      'Deployment scripts & documentation',
+    ],
     favorite: false,
   },
   {
     id: 2,
     title: 'Web3 Security Audit',
     rating: 5.0,
+    reviews: 87,
     price: 850,
     tag: 'Security',
     description:
@@ -23,12 +30,18 @@ const servicesData = [
     siteName: 'SecureChain',
     siteUrl: '#',
     image: '/rectangle.webp',
+    includes: [
+      'Static code analysis',
+      'Manual penetration testing',
+      'Detailed audit report',
+    ],
     favorite: true,
   },
   {
     id: 3,
     title: 'dApp Interface Design',
     rating: 4.8,
+    reviews: 64,
     price: 980,
     tag: 'UI/UX',
     description:
@@ -36,12 +49,18 @@ const servicesData = [
     siteName: 'PixelPerfect',
     siteUrl: '#',
     image: '/rectangle_9.webp',
+    includes: [
+      'High-fidelity Figma mockups',
+      'Responsive design assets',
+      'Interactive prototypes',
+    ],
     favorite: false,
   },
   {
     id: 4,
     title: 'Oracle Integration',
     rating: 4.7,
+    reviews: 51,
     price: 600,
     tag: 'Chainlink',
     description:
@@ -49,12 +68,18 @@ const servicesData = [
     siteName: 'CryptoDevs',
     siteUrl: '#',
     image: '/container.webp',
+    includes: [
+      'End-to-end integration',
+      'Testnet deployment',
+      'Monitoring dashboard setup',
+    ],
     favorite: false,
   },
   {
     id: 5,
     title: 'ERC-20 Token Creation',
     rating: 4.9,
+    reviews: 143,
     price: 720,
     tag: 'Tokens',
     description:
@@ -62,12 +87,18 @@ const servicesData = [
     siteName: 'TokenFactory',
     siteUrl: '#',
     image: '/rectangle_9.webp',
+    includes: [
+      'Token smart contract',
+      'Mint & burn functions',
+      'Deployment & verification',
+    ],
     favorite: true,
   },
   {
     id: 6,
     title: 'Blockchain Consulting',
     rating: 5.0,
+    reviews: 99,
     price: 1500,
     tag: 'Strategy',
     description:
@@ -75,12 +106,18 @@ const servicesData = [
     siteName: 'SecureChain',
     siteUrl: '#',
     image: '/rectangle.webp',
+    includes: [
+      'Use-case analysis',
+      'Road-map creation',
+      'Cost-benefit assessment',
+    ],
     favorite: false,
   },
   {
     id: 7,
     title: 'NFT Marketplace Development',
     rating: 4.8,
+    reviews: 73,
     price: 2500,
     tag: 'NFT',
     description:
@@ -88,12 +125,18 @@ const servicesData = [
     siteName: 'PixelPerfect',
     siteUrl: '#',
     image: '/container.webp',
+    includes: [
+      'Custom smart contracts',
+      'Responsive front-end',
+      'Wallet integration (Metamask, WalletConnect)',
+    ],
     favorite: false,
   },
   {
     id: 8,
     title: 'DeFi Treasury Management',
     rating: 4.9,
+    reviews: 58,
     price: 1800,
     tag: 'DeFi',
     description:
@@ -101,6 +144,11 @@ const servicesData = [
     siteName: 'TokenFactory',
     siteUrl: '#',
     image: '/rectangle.webp',
+    includes: [
+      'Yield strategy design',
+      'Risk assessment report',
+      'Monthly performance dashboard',
+    ],
     favorite: false,
   },
 ]

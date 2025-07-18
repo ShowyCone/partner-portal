@@ -7,6 +7,7 @@ import Discover from './pages/discover/Discover'
 import NotificationBanner from './components/ui/NotificationBanner'
 import Login from './pages/auth/Login'
 import Apply from './pages/provider/Apply'
+import SingleService from './pages/SingleService'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path='/about' element={<AboutUs />} />
         <Route path='/login' element={<Login />} />
         <Route path='/apply' element={<Apply />} />
+        <Route path='/service' element={<SingleService />} />
       </Routes>
       <Footer />
     </>
