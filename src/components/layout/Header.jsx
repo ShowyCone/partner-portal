@@ -1,9 +1,30 @@
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Link, useLocation, NavLink } from 'react-router'
+import React, { useEffect, useState, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Link, useLocation, NavLink, useNavigate } from 'react-router'
+import { FaUserCircle, FaAngleDown } from 'react-icons/fa'
 
 const Header = () => {
   const location = useLocation()
+
+  const [logged, setLogged] = useState(
+    typeof window !== 'undefined' &&
+      localStorage.getItem('isAuthenticated') === 'true'
+  )
+
+  useEffect(() => {
+    const handler = () =>
+      setLogged(
+        typeof window !== 'undefined' &&
+          localStorage.getItem('isAuthenticated') === 'true'
+      )
+
+    window.addEventListener('login', handler)
+    window.addEventListener('logout', handler)
+    return () => {
+      window.removeEventListener('login', handler)
+      window.removeEventListener('logout', handler)
+    }
+  }, [])
 
   return (
     <motion.header
@@ -47,20 +68,164 @@ const Header = () => {
       </div>
 
       <div className='flex items-center space-x-4'>
-        <Link
-          to='/login'
-          className='text-gray-700 hover:text-rwa cursor-pointer transition-colors duration-200 font-medium'
-        >
-          Sign In
-        </Link>
-        <Link
-          to='/login'
-          className='bg-rwa text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium'
-        >
-          Sign Up
-        </Link>
+        {logged ? (
+          <AddressIndicator />
+        ) : (
+          <>
+            <Link
+              to='/login'
+              className='text-gray-700 hover:text-rwa cursor-pointer transition-colors duration-200 font-medium'
+            >
+              Sign In
+            </Link>
+            <Link
+              to='/login'
+              className='bg-rwa text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium'
+            >
+              Sign Up
+            </Link>
+          </>
+        )}
       </div>
     </motion.header>
+  )
+}
+
+const AddressIndicator = () => {
+  const fullAddress =
+    (typeof window !== 'undefined' && localStorage.getItem('addressNumber')) ||
+    '0xd123A4B5C6D7E8F923FG2'
+
+  const truncateAddress = (addr) => `${addr.slice(0, 7)}...${addr.slice(-5)}`
+
+  const [expanded, setExpanded] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef(null)
+  const navigate = useNavigate()
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated')
+    window.dispatchEvent(new Event('logout'))
+    setMenuOpen(false)
+    navigate('/login')
+  }
+
+  useEffect(() => {
+    const refresh = () => {
+      setExpanded(false)
+      setMenuOpen(false)
+    }
+
+    window.addEventListener('login', refresh)
+    window.addEventListener('logout', refresh)
+    return () => {
+      window.removeEventListener('login', refresh)
+      window.removeEventListener('logout', refresh)
+    }
+  }, [])
+
+  return (
+    <div className='flex items-center gap-2'>
+      <motion.button
+        onClick={() => setExpanded(!expanded)}
+        className='flex items-center gap-2 bg-gradient-to-r from-rwa to-rwa/80 text-white px-4 py-2 rounded-md overflow-hidden focus:outline-none'
+        initial={{ width: 'auto' }}
+        animate={{
+          paddingRight: expanded ? '1.5rem' : '1rem',
+          transition: { type: 'spring', stiffness: 200, damping: 20 },
+        }}
+      >
+        <span className='whitespace-nowrap font-mono text-sm'>
+          {expanded ? fullAddress : truncateAddress(fullAddress)}
+        </span>
+      </motion.button>
+
+      <div className='relative' ref={menuRef}>
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className='flex items-center gap-2 p-2 bg-white border border-rwa rounded-md hover:bg-gray-50 text-rwa cursor-pointer'
+        >
+          <FaAngleDown
+            size={18}
+            className={`text-rwa transition-transform ${
+              menuOpen ? 'rotate-180' : ''
+            }`}
+          />
+          <FaUserCircle size={18} className='text-rwa' />
+        </button>
+
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.ul
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className='absolute right-0 mt-3 w-56 bg-white rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] z-50 p-2'
+            >
+              <li>
+                <Link
+                  to='/cart'
+                  className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Cart
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to='/profile'
+                  className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Profile
+                </Link>
+              </li>
+              <li className='border-t border-gray-200 my-1' />
+              <li>
+                <button
+                  className='block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100'
+                  onClick={() => {
+                    // TODO: implement wallet disconnection logic
+                    setMenuOpen(false)
+                  }}
+                >
+                  Disconnect Wallet
+                </button>
+              </li>
+              <li>
+                <Link
+                  to='/support'
+                  className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Support Center
+                </Link>
+              </li>
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className='block w-full text-left px-4 py-2 text-rwa hover:bg-gray-100 font-medium'
+                >
+                  Log Out
+                </button>
+              </li>
+            </motion.ul>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
   )
 }
 

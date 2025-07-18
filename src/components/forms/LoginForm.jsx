@@ -27,7 +27,18 @@ export default function LoginForm({
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Aquí iría llamada a API → si todo bien:
+
+    const randomMiddle = Math.random()
+      .toString(36)
+      .substring(2, 12)
+      .toUpperCase()
+    const addressNumber = `0xd123${randomMiddle}23FG2`
+
+    localStorage.setItem('isAuthenticated', 'true')
+    localStorage.setItem('addressNumber', addressNumber)
+
+    window.dispatchEvent(new Event('login'))
+
     onSuccess()
   }
 
