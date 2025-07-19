@@ -5,13 +5,13 @@ const variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
 }
 
-export default function StepWrapper({ children }) {
+export default function StepWrapper({ children, className = '' }) {
   return (
     <motion.div
       variants={variants}
       initial='hidden'
       animate='visible'
-      className='flex flex-col gap-4 px-8 py-2 rounded-xl'
+      className={`flex flex-col gap-4 py-2 rounded-xl ${className}`}
     >
       {children}
     </motion.div>

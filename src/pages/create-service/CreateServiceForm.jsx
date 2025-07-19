@@ -1,0 +1,633 @@
+import React, { useState, useRef } from 'react'
+import { motion } from 'framer-motion'
+import { FaCloudUploadAlt, FaTimes } from 'react-icons/fa'
+import { useNavigate } from 'react-router'
+
+import Stepper from '../../components/steper/Stepper'
+import StepWrapper from '../../components/steper/StepWrapper'
+import Success from '../../components/Success'
+
+const CATEGORIES = [
+  'Smart Contract Dev',
+  'Token Audit',
+  'NFT Mint',
+  'DeFi Support',
+  'Web3 Consulting',
+  'Tokenomics Design',
+]
+
+const PRICE_PLANS = ['Basic', 'Standard', 'Pro']
+
+const fadeVariants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+}
+
+// Línea divisoria a ancho completo dejando sin afectar el padding horizontal de StepWrapper
+const Separator = () => <div className='w-full h-px bg-gray-200 my-2' />
+
+export default function CreateServiceForm() {
+  // Nombre de la compañía proveniente de la API (placeholder por ahora)
+  const [companyName] = useState('Your Company')
+  const [step, setStep] = useState(0)
+  const [thumbnail, setThumbnail] = useState(null)
+  const [form, setForm] = useState({
+    title: '',
+    category: '',
+
+    description: '',
+    tags: [],
+
+    priceType: 'fixed',
+    fixedSale: '',
+    fixedPartner: '',
+    plans: {
+      Basic: { enabled: false, sale: '', partner: '' },
+      Standard: { enabled: false, sale: '', partner: '' },
+      Pro: { enabled: false, sale: '', partner: '' },
+    },
+
+    contentFixed: '',
+    contentPlans: { Basic: '', Standard: '', Pro: '' },
+    faqEnabled: false,
+    faqs: [],
+  })
+
+  const tagInputRef = useRef(null)
+  const navigate = useNavigate()
+
+  const totalSteps = 6
+  const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps))
+  const prevStep = () => setStep((prev) => Math.max(prev - 1, 0))
+
+  const isStepValid = () => {
+    switch (step) {
+      case 1:
+        return form.title.trim() && form.category
+      case 2:
+        return form.description.trim() && form.tags.length
+      case 3:
+        if (form.priceType === 'fixed')
+          return (
+            form.fixedSale &&
+            form.fixedPartner &&
+            Number(form.fixedPartner) < Number(form.fixedSale)
+          )
+        return PRICE_PLANS.some(
+          (p) =>
+            form.plans[p].enabled &&
+            form.plans[p].sale &&
+            form.plans[p].partner &&
+            Number(form.plans[p].partner) < Number(form.plans[p].sale)
+        )
+      case 4:
+        if (form.priceType === 'fixed') return form.contentFixed.trim()
+        return PRICE_PLANS.every(
+          (p) => !form.plans[p].enabled || form.contentPlans[p].trim()
+        )
+      case 5:
+        return !!thumbnail
+      default:
+        return true
+    }
+  }
+
+  const handleChange = (e) =>
+    setForm((p) => ({ ...p, [e.target.name]: e.target.value }))
+
+  const handlePlanToggle = (plan) =>
+    setForm((p) => ({
+      ...p,
+      plans: {
+        ...p.plans,
+        [plan]: { ...p.plans[plan], enabled: !p.plans[plan].enabled },
+      },
+    }))
+
+  const handlePlanField = (plan, field, value) =>
+    setForm((p) => ({
+      ...p,
+      plans: {
+        ...p.plans,
+        [plan]: { ...p.plans[plan], [field]: value },
+      },
+    }))
+
+  const addTag = (value) => {
+    const tag = value.trim()
+    if (tag && !form.tags.includes(tag) && form.tags.length < 6) {
+      setForm((p) => ({ ...p, tags: [...p.tags, tag] }))
+    }
+  }
+
+  const handleTagKeyDown = (e) => {
+    if (['Enter', ' '].includes(e.key)) {
+      e.preventDefault()
+      addTag(e.target.value)
+      e.target.value = ''
+    }
+  }
+
+  const removeTag = (t) =>
+    setForm((p) => ({ ...p, tags: p.tags.filter((tag) => tag !== t) }))
+
+  const addFaq = () =>
+    setForm((p) => ({
+      ...p,
+      faqs: [...p.faqs, { q: '', a: '' }].slice(0, 6),
+    }))
+
+  const updateFaq = (idx, field, value) =>
+    setForm((p) => ({
+      ...p,
+      faqs: p.faqs.map((f, i) => (i === idx ? { ...f, [field]: value } : f)),
+    }))
+
+  const removeFaq = (idx) =>
+    setForm((p) => ({ ...p, faqs: p.faqs.filter((_, i) => i !== idx) }))
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // API call
+    nextStep()
+  }
+
+  if (step === 6) {
+    return (
+      <Success
+        title='Your Service was Successfully Submitted'
+        subtitle='Our team will review your service request to be listing in the platform. The process will take approximately 24-36 hours. We will let you know when your service goes live.'
+        ctaText='Go to dashboard'
+        onCta={() => navigate('/dashboard')}
+      />
+    )
+  }
+
+  return (
+    <section className='flex items-center justify-center min-h-screen bg-red-500 py-15'>
+      <motion.form
+        onSubmit={handleSubmit}
+        variants={fadeVariants}
+        initial='hidden'
+        animate='visible'
+        className='w-full max-w-3xl min-h-[450px] bg-white/60 backdrop-blur-xl shadow-xl rounded-2xl py-5 px-10 flex flex-col gap-6'
+      >
+        {step > 0 && (
+          <div className='px-25 w-full'>
+            <Stepper currentStep={step} totalSteps={totalSteps} className='' />
+          </div>
+        )}
+        {renderStepContent()}
+        <div className='flex justify-between mt-6 px-5'>
+          {step > 0 ? (
+            <button
+              type='button'
+              onClick={prevStep}
+              className='px-6 py-2 border border-rwa text-rwa rounded-2xl hover:bg-rwa/10 transition'
+            >
+              Go Back
+            </button>
+          ) : (
+            <span />
+          )}
+          {step > 0 && step < 5 ? (
+            <button
+              type='button'
+              onClick={nextStep}
+              disabled={!isStepValid()}
+              className={`px-6 py-2 rounded-2xl text-white transition ${
+                isStepValid()
+                  ? 'bg-rwa hover:opacity-90'
+                  : 'bg-gray-300 cursor-not-allowed'
+              }`}
+            >
+              Next
+            </button>
+          ) : step === 5 ? (
+            <button
+              type='submit'
+              disabled={!isStepValid()}
+              className={`px-6 py-2 rounded-2xl text-white ${
+                isStepValid()
+                  ? 'bg-rwa hover:opacity-90'
+                  : 'bg-gray-300 cursor-not-allowed'
+              }`}
+            >
+              Submit Service
+            </button>
+          ) : (
+            <span />
+          )}
+        </div>
+      </motion.form>
+    </section>
+  )
+
+  function renderStepContent() {
+    switch (step) {
+      case 0:
+        return (
+          <StepWrapper className='flex-1 justify-between h-full gap-8'>
+            <div className='flex flex-col gap-4'>
+              <p className='text-sm'>
+                You will submit your request as{' '}
+                <span className='italic font-medium'>{companyName}</span>
+              </p>
+              <Separator />
+              <h1 className='text-3xl font-bold'>
+                Request a <span className='text-rwa'>listing service</span>
+              </h1>
+              <p className='text-gray-600 max-w-md'>
+                All service request will be reviewed by the RWA Inc team before
+                being approved.
+              </p>
+            </div>
+
+            <button
+              type='button'
+              onClick={nextStep}
+              className='bg-rwa text-white px-6 py-3 rounded-2xl hover:opacity-90 transition w-fit'
+            >
+              Submit a service
+            </button>
+          </StepWrapper>
+        )
+
+      case 1:
+        return (
+          <StepWrapper>
+            <Separator />
+            <h2 className='text-2xl font-bold'>About your service</h2>
+            <p className='text-sm text-gray-600'>
+              All service request will be reviewed by the RWA Inc team before
+              being approved.
+            </p>
+
+            <label className='flex flex-col gap-2 mt-4'>
+              <span className='text-rwa font-medium'>Title of the service</span>
+              <input
+                type='text'
+                name='title'
+                placeholder='Example: NFT Mint development Ethereum'
+                value={form.title}
+                onChange={handleChange}
+                className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+              />
+            </label>
+
+            <label className='flex flex-col gap-2'>
+              <span className='text-rwa font-medium'>
+                Select a category that identity your service
+              </span>
+              <select
+                name='category'
+                value={form.category}
+                onChange={handleChange}
+                className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+              >
+                <option value=''>Select a category</option>
+                {CATEGORIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </StepWrapper>
+        )
+
+      case 2:
+        return (
+          <StepWrapper>
+            <Separator />
+            <h2 className='text-2xl font-bold'>Description &amp; Tags</h2>
+            <p className='text-sm text-gray-600'>
+              All service request will be reviewed by the RWA Inc team before
+              being approved.
+            </p>
+
+            <label className='flex flex-col gap-2 mt-4'>
+              <span className='font-medium'>
+                Full description of the service
+              </span>
+              <textarea
+                name='description'
+                rows={5}
+                placeholder='Full explanation of what you offer in this service'
+                value={form.description}
+                onChange={handleChange}
+                className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa resize-none'
+              />
+            </label>
+
+            <label className='flex flex-col gap-2'>
+              <span className='font-medium'>
+                Write max 6 tags for your service
+              </span>
+              <input
+                ref={tagInputRef}
+                type='text'
+                placeholder='Press space or enter to add'
+                onKeyDown={handleTagKeyDown}
+                className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+              />
+            </label>
+
+            {form.tags.length > 0 && (
+              <div className='flex flex-wrap gap-2'>
+                {form.tags.map((t) => (
+                  <span
+                    key={t}
+                    className='flex items-center gap-1 bg-rwa/10 text-rwa px-3 py-1 rounded-full text-sm'
+                  >
+                    {t}
+                    <button type='button' onClick={() => removeTag(t)}>
+                      <FaTimes size={10} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </StepWrapper>
+        )
+
+      case 3:
+        return (
+          <StepWrapper>
+            <Separator />
+            <h2 className='text-2xl font-bold'>Offer &amp; Price</h2>
+            <p className='text-sm text-gray-600'>
+              All service request will be reviewed by the RWA Inc team before
+              being approved.
+            </p>
+
+            <div className='flex gap-4 mt-4'>
+              {['fixed', 'plans'].map((type) => (
+                <label key={type} className='flex items-center gap-2'>
+                  <input
+                    type='radio'
+                    name='priceType'
+                    value={type}
+                    checked={form.priceType === type}
+                    onChange={handleChange}
+                  />
+                  {type === 'fixed' ? 'Fixed Price' : 'Based on plans'}
+                </label>
+              ))}
+            </div>
+
+            {form.priceType === 'fixed' ? (
+              <div className='grid md:grid-cols-2 gap-4 mt-4'>
+                <label className='flex flex-col gap-2'>
+                  <span className='font-medium'>Price of sale</span>
+                  <input
+                    type='number'
+                    name='fixedSale'
+                    placeholder='Example: 500'
+                    value={form.fixedSale}
+                    onChange={handleChange}
+                    className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+                  />
+                </label>
+
+                <label className='flex flex-col gap-2'>
+                  <span className='font-medium'>Price for other partners</span>
+                  <input
+                    type='number'
+                    name='fixedPartner'
+                    placeholder='Example: 400'
+                    value={form.fixedPartner}
+                    onChange={handleChange}
+                    className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+                  />
+                  {form.fixedPartner &&
+                    Number(form.fixedPartner) >= Number(form.fixedSale) && (
+                      <span className='text-xs text-red-500'>
+                        Price need to be lower price of sale
+                      </span>
+                    )}
+                </label>
+              </div>
+            ) : (
+              <>
+                <label className='font-medium mt-4'>
+                  Select the plans that you want to adjust
+                </label>
+
+                <div className='flex flex-wrap gap-4'>
+                  {PRICE_PLANS.map((p) => (
+                    <label key={p} className='flex items-center gap-2'>
+                      <input
+                        type='checkbox'
+                        checked={form.plans[p].enabled}
+                        onChange={() => handlePlanToggle(p)}
+                      />
+                      {p}
+                    </label>
+                  ))}
+                </div>
+
+                {PRICE_PLANS.filter((p) => form.plans[p].enabled).map((p) => (
+                  <div key={p} className='mt-4 border p-4 rounded-xl'>
+                    <h3 className='font-semibold text-rwa mb-2'>{p} Plan</h3>
+                    <div className='grid md:grid-cols-2 gap-4'>
+                      <label className='flex flex-col gap-2'>
+                        <span className='font-medium'>Price of sale</span>
+                        <input
+                          type='number'
+                          value={form.plans[p].sale}
+                          onChange={(e) =>
+                            handlePlanField(p, 'sale', e.target.value)
+                          }
+                          className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+                        />
+                      </label>
+
+                      <label className='flex flex-col gap-2'>
+                        <span className='font-medium'>
+                          Price for other partners
+                        </span>
+                        <input
+                          type='number'
+                          value={form.plans[p].partner}
+                          onChange={(e) =>
+                            handlePlanField(p, 'partner', e.target.value)
+                          }
+                          className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+                        />
+                        {form.plans[p].partner &&
+                          Number(form.plans[p].partner) >=
+                            Number(form.plans[p].sale) && (
+                            <span className='text-xs text-red-500'>
+                              Price need to be lower price of sale
+                            </span>
+                          )}
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
+          </StepWrapper>
+        )
+
+      case 4:
+        return (
+          <StepWrapper>
+            <Separator />
+            <h2 className='text-2xl font-bold'>Information Content</h2>
+            <p className='text-sm text-gray-600'>
+              All service request will be reviewed by the RWA Inc team before
+              being approved.
+            </p>
+
+            {form.priceType === 'fixed' ? (
+              <label className='flex flex-col gap-2 mt-4'>
+                <span className='font-medium'>
+                  Please describe what include your service in detail
+                </span>
+                <textarea
+                  rows={4}
+                  name='contentFixed'
+                  value={form.contentFixed}
+                  onChange={handleChange}
+                  placeholder='The content of what your offer with this service a package'
+                  className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa resize-none'
+                />
+              </label>
+            ) : (
+              PRICE_PLANS.filter((p) => form.plans[p].enabled).map((p) => (
+                <label key={p} className='flex flex-col gap-2 mt-4'>
+                  <span className='font-medium'>
+                    Please describe what include your {p} Plan
+                  </span>
+                  <textarea
+                    rows={3}
+                    value={form.contentPlans[p]}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        contentPlans: {
+                          ...prev.contentPlans,
+                          [p]: e.target.value,
+                        },
+                      }))
+                    }
+                    className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa resize-none'
+                  />
+                </label>
+              ))
+            )}
+
+            <div className='mt-6'>
+              <span className='font-medium'>
+                Do you want to add a FAQ into your service? (Max 6 QA)
+              </span>
+              <div className='flex gap-4 mt-2'>
+                {['Yes', 'No'].map((opt) => (
+                  <label key={opt} className='flex items-center gap-2'>
+                    <input
+                      type='radio'
+                      name='faqEnabled'
+                      value={opt === 'Yes'}
+                      checked={form.faqEnabled === (opt === 'Yes')}
+                      onChange={(e) =>
+                        setForm((p) => ({
+                          ...p,
+                          faqEnabled: e.target.value === 'true',
+                          faqs: [],
+                        }))
+                      }
+                    />
+                    {opt}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {form.faqEnabled && (
+              <div className='mt-4 flex flex-col gap-4'>
+                {form.faqs.map((faq, idx) => (
+                  <div
+                    key={idx}
+                    className='border p-4 rounded-xl flex flex-col gap-2 relative'
+                  >
+                    <button
+                      type='button'
+                      onClick={() => removeFaq(idx)}
+                      className='absolute top-2 right-2 text-gray-400 hover:text-red-500'
+                    >
+                      <FaTimes />
+                    </button>
+                    <input
+                      type='text'
+                      placeholder='Question'
+                      value={faq.q}
+                      onChange={(e) => updateFaq(idx, 'q', e.target.value)}
+                      className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+                    />
+                    <textarea
+                      rows={3}
+                      placeholder='Answer'
+                      value={faq.a}
+                      onChange={(e) => updateFaq(idx, 'a', e.target.value)}
+                      className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa resize-none'
+                    />
+                  </div>
+                ))}
+
+                {form.faqs.length < 6 && (
+                  <button
+                    type='button'
+                    onClick={addFaq}
+                    className='self-start px-4 py-2 border border-rwa text-rwa rounded-xl hover:bg-rwa/10 transition'
+                  >
+                    + Add QA
+                  </button>
+                )}
+              </div>
+            )}
+          </StepWrapper>
+        )
+
+      case 5:
+        return (
+          <StepWrapper>
+            <Separator />
+            <h2 className='text-2xl font-bold'>Thumbnails &amp; Media</h2>
+            <p className='text-sm text-gray-600'>
+              All service request will be reviewed by the RWA Inc team before
+              being approved.
+            </p>
+
+            <label className='flex flex-col gap-2 mt-4 font-medium'>
+              Upload the thumbnail for your service (aspect ratio 7:5)
+              <div className='border-dashed border-2 border-gray-300 p-6 rounded-md flex flex-col items-center justify-center text-center'>
+                <FaCloudUploadAlt size={48} className='text-rwa mb-2' />
+                <span className='font-semibold'>
+                  Choose a file or drag &amp; drop it here
+                </span>
+                <span className='text-xs text-gray-500'>
+                  JPEG, PNG, PDF and MP4 formats, up to 10MB
+                </span>
+                <input
+                  type='file'
+                  accept='image/*,video/mp4,application/pdf'
+                  className='hidden'
+                  onChange={(e) => setThumbnail(e.target.files[0])}
+                />
+                {thumbnail && (
+                  <span className='text-xs text-green-600 mt-2'>
+                    {thumbnail.name}
+                  </span>
+                )}
+              </div>
+            </label>
+          </StepWrapper>
+        )
+
+      default:
+        return null
+    }
+  }
+}
