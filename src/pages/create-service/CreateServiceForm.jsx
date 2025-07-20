@@ -24,7 +24,7 @@ const fadeVariants = {
 }
 
 // Línea divisoria a ancho completo dejando sin afectar el padding horizontal de StepWrapper
-const Separator = () => <div className='w-full h-px bg-gray-200 my-2' />
+const Separator = () => <div className='w-full h-px bg-gray-200' />
 
 export default function CreateServiceForm() {
   // Nombre de la compañía proveniente de la API (placeholder por ahora)
@@ -170,15 +170,17 @@ export default function CreateServiceForm() {
         variants={fadeVariants}
         initial='hidden'
         animate='visible'
-        className='w-full max-w-3xl min-h-[450px] bg-white/60 backdrop-blur-xl shadow-xl rounded-2xl py-5 px-10 flex flex-col gap-6'
+        className='w-full max-w-3xl min-h-[450px] bg-white/60 backdrop-blur-xl shadow-xl rounded-2xl flex flex-col'
       >
         {step > 0 && (
-          <div className='px-25 w-full'>
-            <Stepper currentStep={step} totalSteps={totalSteps} className='' />
+          <div className='px-10 py-5'>
+            <Stepper currentStep={step} totalSteps={totalSteps} />
           </div>
         )}
-        {renderStepContent()}
-        <div className='flex justify-between mt-6 px-5'>
+
+        <div className='flex-grow flex flex-col'>{renderStepContent()}</div>
+
+        <div className='flex justify-between px-10 pb-5'>
           {step > 0 ? (
             <button
               type='button'
@@ -227,13 +229,15 @@ export default function CreateServiceForm() {
     switch (step) {
       case 0:
         return (
-          <StepWrapper className='flex-1 justify-between h-full gap-8'>
-            <div className='flex flex-col gap-4'>
-              <p className='text-sm'>
+          <div className='flex-1 flex flex-col justify-between h-full '>
+            <div className='flex flex-col gap-4 px-10 py-5'>
+              <p className='text-sm font-medium'>
                 You will submit your request as{' '}
                 <span className='italic font-medium'>{companyName}</span>
               </p>
-              <Separator />
+            </div>
+            <Separator />
+            <div className='flex flex-col px-10 py-10'>
               <h1 className='text-3xl font-bold'>
                 Request a <span className='text-rwa'>listing service</span>
               </h1>
@@ -242,388 +246,429 @@ export default function CreateServiceForm() {
                 being approved.
               </p>
             </div>
-
-            <button
-              type='button'
-              onClick={nextStep}
-              className='bg-rwa text-white px-6 py-3 rounded-2xl hover:opacity-90 transition w-fit'
-            >
-              Submit a service
-            </button>
-          </StepWrapper>
+            <div className='mt-auto px-10 pb-5'>
+              <button
+                type='button'
+                onClick={nextStep}
+                className='bg-rwa text-white px-6 py-3 rounded-2xl hover:opacity-90 transition w-fit'
+              >
+                Submit a service
+              </button>
+            </div>
+          </div>
         )
 
       case 1:
         return (
-          <StepWrapper>
+          <div className='flex flex-col gap-4 flex-grow'>
             <Separator />
-            <h2 className='text-2xl font-bold'>About your service</h2>
-            <p className='text-sm text-gray-600'>
-              All service request will be reviewed by the RWA Inc team before
-              being approved.
-            </p>
+            <div className='px-10 flex flex-col gap-4'>
+              <div>
+                <h2 className='text-2xl font-bold'>
+                  About your <span className='text-rwa'>service</span>
+                </h2>
+                <p className='text-sm text-gray-600'>
+                  All service request will be reviewed by the RWA Inc team
+                  before being approved.
+                </p>
+              </div>
 
-            <label className='flex flex-col gap-2 mt-4'>
-              <span className='text-rwa font-medium'>Title of the service</span>
-              <input
-                type='text'
-                name='title'
-                placeholder='Example: NFT Mint development Ethereum'
-                value={form.title}
-                onChange={handleChange}
-                className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
-              />
-            </label>
+              <label className='flex flex-col gap-2 mt-4'>
+                <span className='text-rwa font-medium'>
+                  Title of the service
+                </span>
+                <input
+                  type='text'
+                  name='title'
+                  placeholder='Example: NFT Mint development Ethereum'
+                  value={form.title}
+                  onChange={handleChange}
+                  className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+                />
+              </label>
 
-            <label className='flex flex-col gap-2'>
-              <span className='text-rwa font-medium'>
-                Select a category that identity your service
-              </span>
-              <select
-                name='category'
-                value={form.category}
-                onChange={handleChange}
-                className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
-              >
-                <option value=''>Select a category</option>
-                {CATEGORIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </StepWrapper>
+              <label className='flex flex-col gap-2'>
+                <span className='text-rwa font-medium'>
+                  Select a category that identity your service
+                </span>
+                <select
+                  name='category'
+                  value={form.category}
+                  onChange={handleChange}
+                  className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+                >
+                  <option value=''>Select a category</option>
+                  {CATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </div>
         )
 
       case 2:
         return (
-          <StepWrapper>
+          <div className='flex flex-col gap-4 flex-grow'>
             <Separator />
-            <h2 className='text-2xl font-bold'>Description &amp; Tags</h2>
-            <p className='text-sm text-gray-600'>
-              All service request will be reviewed by the RWA Inc team before
-              being approved.
-            </p>
-
-            <label className='flex flex-col gap-2 mt-4'>
-              <span className='font-medium'>
-                Full description of the service
-              </span>
-              <textarea
-                name='description'
-                rows={5}
-                placeholder='Full explanation of what you offer in this service'
-                value={form.description}
-                onChange={handleChange}
-                className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa resize-none'
-              />
-            </label>
-
-            <label className='flex flex-col gap-2'>
-              <span className='font-medium'>
-                Write max 6 tags for your service
-              </span>
-              <input
-                ref={tagInputRef}
-                type='text'
-                placeholder='Press space or enter to add'
-                onKeyDown={handleTagKeyDown}
-                className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
-              />
-            </label>
-
-            {form.tags.length > 0 && (
-              <div className='flex flex-wrap gap-2'>
-                {form.tags.map((t) => (
-                  <span
-                    key={t}
-                    className='flex items-center gap-1 bg-rwa/10 text-rwa px-3 py-1 rounded-full text-sm'
-                  >
-                    {t}
-                    <button type='button' onClick={() => removeTag(t)}>
-                      <FaTimes size={10} />
-                    </button>
-                  </span>
-                ))}
+            <div className='px-10 pb-5 flex flex-col gap-4'>
+              <div>
+                <h2 className='text-2xl font-bold'>
+                  Description &amp; <span className='text-rwa'>Tags</span>
+                </h2>
+                <p className='text-sm text-gray-600'>
+                  All service request will be reviewed by the RWA Inc team
+                  before being approved.
+                </p>
               </div>
-            )}
-          </StepWrapper>
+
+              <label className='flex flex-col gap-2 mt-4'>
+                <span className='font-medium'>
+                  Full description of the service
+                </span>
+                <textarea
+                  name='description'
+                  rows={5}
+                  placeholder='Full explanation of what you offer in this service'
+                  value={form.description}
+                  onChange={handleChange}
+                  className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa resize-none'
+                />
+              </label>
+
+              <label className='flex flex-col gap-2'>
+                <span className='font-medium'>
+                  Write max 6 tags for your service
+                </span>
+                <div className='w-full px-4 py-2 border border-rwa rounded-lg focus-within:ring-2 focus-within:ring-rwa flex flex-wrap gap-2 items-center'>
+                  {form.tags.map((t) => (
+                    <span
+                      key={t}
+                      className='flex items-center gap-1 bg-rwa/10 text-rwa px-3 py-1 rounded-full text-sm cursor-pointer'
+                      onClick={() => removeTag(t)}
+                    >
+                      {t}
+                      <FaTimes size={10} />
+                    </span>
+                  ))}
+                  <input
+                    ref={tagInputRef}
+                    type='text'
+                    placeholder='Press space or enter to add'
+                    onKeyDown={handleTagKeyDown}
+                    className='flex-1 min-w-[100px] border-none focus:ring-0 focus:outline-none p-0 bg-transparent'
+                  />
+                </div>
+              </label>
+            </div>
+          </div>
         )
 
       case 3:
         return (
-          <StepWrapper>
+          <div className='flex flex-col gap-4 flex-grow'>
             <Separator />
-            <h2 className='text-2xl font-bold'>Offer &amp; Price</h2>
-            <p className='text-sm text-gray-600'>
-              All service request will be reviewed by the RWA Inc team before
-              being approved.
-            </p>
-
-            <div className='flex gap-4 mt-4'>
-              {['fixed', 'plans'].map((type) => (
-                <label key={type} className='flex items-center gap-2'>
-                  <input
-                    type='radio'
-                    name='priceType'
-                    value={type}
-                    checked={form.priceType === type}
-                    onChange={handleChange}
-                  />
-                  {type === 'fixed' ? 'Fixed Price' : 'Based on plans'}
-                </label>
-              ))}
-            </div>
-
-            {form.priceType === 'fixed' ? (
-              <div className='grid md:grid-cols-2 gap-4 mt-4'>
-                <label className='flex flex-col gap-2'>
-                  <span className='font-medium'>Price of sale</span>
-                  <input
-                    type='number'
-                    name='fixedSale'
-                    placeholder='Example: 500'
-                    value={form.fixedSale}
-                    onChange={handleChange}
-                    className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
-                  />
-                </label>
-
-                <label className='flex flex-col gap-2'>
-                  <span className='font-medium'>Price for other partners</span>
-                  <input
-                    type='number'
-                    name='fixedPartner'
-                    placeholder='Example: 400'
-                    value={form.fixedPartner}
-                    onChange={handleChange}
-                    className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
-                  />
-                  {form.fixedPartner &&
-                    Number(form.fixedPartner) >= Number(form.fixedSale) && (
-                      <span className='text-xs text-red-500'>
-                        Price need to be lower price of sale
-                      </span>
-                    )}
-                </label>
+            <div className='px-10 pb-5 flex flex-col gap-4'>
+              <div>
+                <h2 className='text-2xl font-bold'>
+                  Offer &amp; <span className='text-rwa'>Price</span>
+                </h2>
+                <p className='text-sm text-gray-600'>
+                  All service request will be reviewed by the RWA Inc team
+                  before being approved.
+                </p>
               </div>
-            ) : (
-              <>
-                <label className='font-medium mt-4'>
-                  Select the plans that you want to adjust
-                </label>
 
-                <div className='flex flex-wrap gap-4'>
-                  {PRICE_PLANS.map((p) => (
-                    <label key={p} className='flex items-center gap-2'>
-                      <input
-                        type='checkbox'
-                        checked={form.plans[p].enabled}
-                        onChange={() => handlePlanToggle(p)}
-                      />
-                      {p}
-                    </label>
-                  ))}
-                </div>
-
-                {PRICE_PLANS.filter((p) => form.plans[p].enabled).map((p) => (
-                  <div key={p} className='mt-4 border p-4 rounded-xl'>
-                    <h3 className='font-semibold text-rwa mb-2'>{p} Plan</h3>
-                    <div className='grid md:grid-cols-2 gap-4'>
-                      <label className='flex flex-col gap-2'>
-                        <span className='font-medium'>Price of sale</span>
-                        <input
-                          type='number'
-                          value={form.plans[p].sale}
-                          onChange={(e) =>
-                            handlePlanField(p, 'sale', e.target.value)
-                          }
-                          className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
-                        />
-                      </label>
-
-                      <label className='flex flex-col gap-2'>
-                        <span className='font-medium'>
-                          Price for other partners
-                        </span>
-                        <input
-                          type='number'
-                          value={form.plans[p].partner}
-                          onChange={(e) =>
-                            handlePlanField(p, 'partner', e.target.value)
-                          }
-                          className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
-                        />
-                        {form.plans[p].partner &&
-                          Number(form.plans[p].partner) >=
-                            Number(form.plans[p].sale) && (
-                            <span className='text-xs text-red-500'>
-                              Price need to be lower price of sale
-                            </span>
-                          )}
-                      </label>
-                    </div>
-                  </div>
+              <div className='flex gap-4 mt-4'>
+                {['fixed', 'plans'].map((type) => (
+                  <label key={type} className='flex items-center gap-2'>
+                    <input
+                      type='radio'
+                      name='priceType'
+                      value={type}
+                      checked={form.priceType === type}
+                      onChange={handleChange}
+                    />
+                    {type === 'fixed' ? 'Fixed Price' : 'Based on plans'}
+                  </label>
                 ))}
-              </>
-            )}
-          </StepWrapper>
+              </div>
+
+              {form.priceType === 'fixed' ? (
+                <div className='grid md:grid-cols-2 gap-4 mt-4'>
+                  <label className='flex flex-col gap-2'>
+                    <span className='font-medium text-rwa'>Price of sale</span>
+                    <input
+                      type='number'
+                      name='fixedSale'
+                      placeholder='Example: 500'
+                      value={form.fixedSale}
+                      onChange={handleChange}
+                      className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+                    />
+                  </label>
+
+                  <label className='flex flex-col gap-2'>
+                    <span className='font-medium text-rwa'>
+                      Price for other partners
+                    </span>
+                    <input
+                      type='number'
+                      name='fixedPartner'
+                      placeholder='Example: 400'
+                      value={form.fixedPartner}
+                      onChange={handleChange}
+                      className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+                    />
+                    {form.fixedPartner &&
+                      Number(form.fixedPartner) >= Number(form.fixedSale) && (
+                        <span className='text-xs text-red-500'>
+                          Price need to be lower price of sale
+                        </span>
+                      )}
+                  </label>
+                </div>
+              ) : (
+                <>
+                  <label className='font-medium mt-4'>
+                    Select the plans that you want to adjust
+                  </label>
+
+                  <div className='flex flex-wrap gap-4'>
+                    {PRICE_PLANS.map((p) => (
+                      <label key={p} className='flex items-center gap-2'>
+                        <input
+                          type='checkbox'
+                          checked={form.plans[p].enabled}
+                          onChange={() => handlePlanToggle(p)}
+                        />
+                        {p}
+                      </label>
+                    ))}
+                  </div>
+
+                  {PRICE_PLANS.filter((p) => form.plans[p].enabled).map((p) => (
+                    <div key={p} className='mt-4'>
+                      <div className='grid md:grid-cols-2 gap-4'>
+                        <label className='flex flex-col gap-2'>
+                          <p className='font-medium'>
+                            {p} Plan{' '}
+                            <span className='text-rwa'>Price of sale</span>
+                          </p>
+                          <input
+                            type='number'
+                            value={form.plans[p].sale}
+                            onChange={(e) =>
+                              handlePlanField(p, 'sale', e.target.value)
+                            }
+                            className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+                          />
+                        </label>
+
+                        <label className='flex flex-col gap-2'>
+                          <p className='font-medium'>
+                            {p} Plan{' '}
+                            <span className='text-rwa'>
+                              Price for other partners
+                            </span>
+                          </p>
+                          <input
+                            type='number'
+                            value={form.plans[p].partner}
+                            onChange={(e) =>
+                              handlePlanField(p, 'partner', e.target.value)
+                            }
+                            className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
+                          />
+                          {form.plans[p].partner &&
+                            Number(form.plans[p].partner) >=
+                              Number(form.plans[p].sale) && (
+                              <span className='text-xs text-red-500'>
+                                Price need to be lower price of sale
+                              </span>
+                            )}
+                        </label>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
+          </div>
         )
 
       case 4:
         return (
-          <StepWrapper>
+          <div className='flex flex-col gap-4 flex-grow'>
             <Separator />
-            <h2 className='text-2xl font-bold'>Information Content</h2>
-            <p className='text-sm text-gray-600'>
-              All service request will be reviewed by the RWA Inc team before
-              being approved.
-            </p>
+            <div className='px-10 pb-5 flex flex-col gap-4'>
+              <div>
+                <h2 className='text-2xl font-bold'>
+                  Information <span className='text-rwa'>Content</span>
+                </h2>
+                <p className='text-sm text-gray-600'>
+                  All service request will be reviewed by the RWA Inc team
+                  before being approved.
+                </p>
+              </div>
 
-            {form.priceType === 'fixed' ? (
-              <label className='flex flex-col gap-2 mt-4'>
-                <span className='font-medium'>
-                  Please describe what include your service in detail
-                </span>
-                <textarea
-                  rows={4}
-                  name='contentFixed'
-                  value={form.contentFixed}
-                  onChange={handleChange}
-                  placeholder='The content of what your offer with this service a package'
-                  className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa resize-none'
-                />
-              </label>
-            ) : (
-              PRICE_PLANS.filter((p) => form.plans[p].enabled).map((p) => (
-                <label key={p} className='flex flex-col gap-2 mt-4'>
+              {form.priceType === 'fixed' ? (
+                <label className='flex flex-col gap-2 mt-4'>
                   <span className='font-medium'>
-                    Please describe what include your {p} Plan
+                    Please describe what include your service in detail
                   </span>
                   <textarea
-                    rows={3}
-                    value={form.contentPlans[p]}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        contentPlans: {
-                          ...prev.contentPlans,
-                          [p]: e.target.value,
-                        },
-                      }))
-                    }
+                    rows={4}
+                    name='contentFixed'
+                    value={form.contentFixed}
+                    onChange={handleChange}
+                    placeholder='The content of what your offer with this service a package'
                     className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa resize-none'
                   />
                 </label>
-              ))
-            )}
-
-            <div className='mt-6'>
-              <span className='font-medium'>
-                Do you want to add a FAQ into your service? (Max 6 QA)
-              </span>
-              <div className='flex gap-4 mt-2'>
-                {['Yes', 'No'].map((opt) => (
-                  <label key={opt} className='flex items-center gap-2'>
-                    <input
-                      type='radio'
-                      name='faqEnabled'
-                      value={opt === 'Yes'}
-                      checked={form.faqEnabled === (opt === 'Yes')}
-                      onChange={(e) =>
-                        setForm((p) => ({
-                          ...p,
-                          faqEnabled: e.target.value === 'true',
-                          faqs: [],
-                        }))
-                      }
-                    />
-                    {opt}
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {form.faqEnabled && (
-              <div className='mt-4 flex flex-col gap-4'>
-                {form.faqs.map((faq, idx) => (
-                  <div
-                    key={idx}
-                    className='border p-4 rounded-xl flex flex-col gap-2 relative'
-                  >
-                    <button
-                      type='button'
-                      onClick={() => removeFaq(idx)}
-                      className='absolute top-2 right-2 text-gray-400 hover:text-red-500'
-                    >
-                      <FaTimes />
-                    </button>
-                    <input
-                      type='text'
-                      placeholder='Question'
-                      value={faq.q}
-                      onChange={(e) => updateFaq(idx, 'q', e.target.value)}
-                      className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa'
-                    />
+              ) : (
+                PRICE_PLANS.filter((p) => form.plans[p].enabled).map((p) => (
+                  <label key={p} className='flex flex-col gap-2 mt-4'>
+                    <p className='font-medium'>
+                      Please describe what include your{' '}
+                      <span className='text-rwa'>{p} Plan</span>
+                    </p>
                     <textarea
                       rows={3}
-                      placeholder='Answer'
-                      value={faq.a}
-                      onChange={(e) => updateFaq(idx, 'a', e.target.value)}
-                      className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa resize-none'
+                      value={form.contentPlans[p]}
+                      onChange={(e) =>
+                        setForm((prev) => ({
+                          ...prev,
+                          contentPlans: {
+                            ...prev.contentPlans,
+                            [p]: e.target.value,
+                          },
+                        }))
+                      }
+                      className='w-full px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa resize-none'
                     />
-                  </div>
-                ))}
+                  </label>
+                ))
+              )}
 
-                {form.faqs.length < 6 && (
-                  <button
-                    type='button'
-                    onClick={addFaq}
-                    className='self-start px-4 py-2 border border-rwa text-rwa rounded-xl hover:bg-rwa/10 transition'
-                  >
-                    + Add QA
-                  </button>
-                )}
+              <div className='mt-6'>
+                <span className='font-medium'>
+                  Do you want to add a FAQ into your service? (Max 6 QA)
+                </span>
+                <div className='flex gap-4 mt-2'>
+                  {['Yes', 'No'].map((opt) => (
+                    <label key={opt} className='flex items-center gap-2'>
+                      <input
+                        type='radio'
+                        name='faqEnabled'
+                        value={opt === 'Yes'}
+                        checked={form.faqEnabled === (opt === 'Yes')}
+                        onChange={(e) =>
+                          setForm((p) => ({
+                            ...p,
+                            faqEnabled: e.target.value === 'true',
+                            faqs: [],
+                          }))
+                        }
+                      />
+                      {opt}
+                    </label>
+                  ))}
+                </div>
               </div>
-            )}
-          </StepWrapper>
+
+              {form.faqEnabled && (
+                <div className='mt-4 flex flex-col gap-6'>
+                  {form.faqs.map((faq, idx) => (
+                    <div
+                      key={idx}
+                      className='rounded-xl flex flex-col gap-2 relative'
+                    >
+                      <div className='relative'>
+                        <input
+                          type='text'
+                          placeholder='Question'
+                          value={faq.q}
+                          onChange={(e) => updateFaq(idx, 'q', e.target.value)}
+                          className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa w-full pr-10'
+                        />
+                        <button
+                          type='button'
+                          onClick={() => removeFaq(idx)}
+                          className='absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-red-500'
+                          tabIndex={-1}
+                          aria-label='Delete question'
+                        >
+                          <FaTimes />
+                        </button>
+                      </div>
+                      <textarea
+                        rows={3}
+                        placeholder='Answer'
+                        value={faq.a}
+                        onChange={(e) => updateFaq(idx, 'a', e.target.value)}
+                        className='px-4 py-2 border border-rwa rounded-lg focus:outline-none focus:ring-2 focus:ring-rwa resize-none'
+                      />
+                    </div>
+                  ))}
+
+                  {form.faqs.length < 6 && (
+                    <button
+                      type='button'
+                      onClick={addFaq}
+                      className='self-start px-4 py-2 border border-rwa text-rwa rounded-2xl hover:bg-rwa/10 transition'
+                    >
+                      + Add QA
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
         )
 
       case 5:
         return (
-          <StepWrapper>
+          <div className='flex flex-col gap-4 flex-grow'>
             <Separator />
-            <h2 className='text-2xl font-bold'>Thumbnails &amp; Media</h2>
-            <p className='text-sm text-gray-600'>
-              All service request will be reviewed by the RWA Inc team before
-              being approved.
-            </p>
-
-            <label className='flex flex-col gap-2 mt-4 font-medium'>
-              Upload the thumbnail for your service (aspect ratio 7:5)
-              <div className='border-dashed border-2 border-gray-300 p-6 rounded-md flex flex-col items-center justify-center text-center'>
-                <FaCloudUploadAlt size={48} className='text-rwa mb-2' />
-                <span className='font-semibold'>
-                  Choose a file or drag &amp; drop it here
-                </span>
-                <span className='text-xs text-gray-500'>
-                  JPEG, PNG, PDF and MP4 formats, up to 10MB
-                </span>
-                <input
-                  type='file'
-                  accept='image/*,video/mp4,application/pdf'
-                  className='hidden'
-                  onChange={(e) => setThumbnail(e.target.files[0])}
-                />
-                {thumbnail && (
-                  <span className='text-xs text-green-600 mt-2'>
-                    {thumbnail.name}
-                  </span>
-                )}
+            <div className='px-10 pb-5 flex flex-col gap-4'>
+              <div>
+                <h2 className='text-2xl font-bold'>
+                  Thumbnails &amp; <span className='text-rwa'>Media</span>
+                </h2>
+                <p className='text-sm text-gray-600'>
+                  All service request will be reviewed by the RWA Inc team
+                  before being approved.
+                </p>
               </div>
-            </label>
-          </StepWrapper>
+
+              <label className='flex flex-col gap-2 mt-4 font-medium'>
+                Upload the thumbnail for your service (aspect ratio 7:5)
+                <div className='border-dashed border-2 border-gray-300 p-6 rounded-md flex flex-col items-center justify-center text-center'>
+                  <FaCloudUploadAlt size={48} className='text-rwa mb-2' />
+                  <span className='font-semibold'>
+                    Choose a file or drag &amp; drop it here
+                  </span>
+                  <span className='text-xs text-gray-500'>
+                    JPEG, PNG, PDF and MP4 formats, up to 10MB
+                  </span>
+                  <input
+                    type='file'
+                    accept='image/*,video/mp4,application/pdf'
+                    className='hidden'
+                    onChange={(e) => setThumbnail(e.target.files[0])}
+                  />
+                  {thumbnail && (
+                    <span className='text-xs text-green-600 mt-2'>
+                      {thumbnail.name}
+                    </span>
+                  )}
+                </div>
+              </label>
+            </div>
+          </div>
         )
 
       default:
