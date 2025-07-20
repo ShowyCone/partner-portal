@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { FaCloudUploadAlt, FaTimes } from 'react-icons/fa'
+import { FaCloudUploadAlt, FaTimes, FaCheck } from 'react-icons/fa'
+import { AiOutlineCheck } from 'react-icons/ai'
 import { useNavigate } from 'react-router'
 
 import Stepper from '../../components/steper/Stepper'
@@ -23,11 +24,9 @@ const fadeVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 }
 
-// Línea divisoria a ancho completo dejando sin afectar el padding horizontal de StepWrapper
 const Separator = () => <div className='w-full h-px bg-gray-200' />
 
 export default function CreateServiceForm() {
-  // Nombre de la compañía proveniente de la API (placeholder por ahora)
   const [companyName] = useState('Your Company')
   const [step, setStep] = useState(0)
   const [thumbnail, setThumbnail] = useState(null)
@@ -152,27 +151,18 @@ export default function CreateServiceForm() {
     nextStep()
   }
 
-  if (step === 6) {
-    return (
-      <Success
-        title='Your Service was Successfully Submitted'
-        subtitle='Our team will review your service request to be listing in the platform. The process will take approximately 24-36 hours. We will let you know when your service goes live.'
-        ctaText='Go to dashboard'
-        onCta={() => navigate('/dashboard')}
-      />
-    )
-  }
-
   return (
-    <section className='flex items-center justify-center min-h-screen bg-red-500 py-15'>
+    <section className='flex items-center justify-center min-h-screen py-15 relative'>
+      <div className='absolute top-10 right-60 w-45 h-45 bg-rwa rounded-full' />
+      <div className='absolute bottom-30 left-65 w-35 h-35 bg-rwa rounded-full' />
       <motion.form
         onSubmit={handleSubmit}
         variants={fadeVariants}
         initial='hidden'
         animate='visible'
-        className='w-full max-w-3xl min-h-[450px] bg-white/60 backdrop-blur-xl shadow-xl rounded-2xl flex flex-col'
+        className='w-full max-w-3xl min-h-[450px] bg-white/30 backdrop-blur-lg shadow-xl rounded-2xl flex flex-col border-b-rwa border-r-rwa border border-t-rwa/50 border-l-rwa/50'
       >
-        {step > 0 && (
+        {step > 0 && step < 6 && (
           <div className='px-10 py-5'>
             <Stepper currentStep={step} totalSteps={totalSteps} />
           </div>
@@ -180,47 +170,49 @@ export default function CreateServiceForm() {
 
         <div className='flex-grow flex flex-col'>{renderStepContent()}</div>
 
-        <div className='flex justify-between px-10 pb-5'>
-          {step > 0 ? (
-            <button
-              type='button'
-              onClick={prevStep}
-              className='px-6 py-2 border border-rwa text-rwa rounded-2xl hover:bg-rwa/10 transition'
-            >
-              Go Back
-            </button>
-          ) : (
-            <span />
-          )}
-          {step > 0 && step < 5 ? (
-            <button
-              type='button'
-              onClick={nextStep}
-              disabled={!isStepValid()}
-              className={`px-6 py-2 rounded-2xl text-white transition ${
-                isStepValid()
-                  ? 'bg-rwa hover:opacity-90'
-                  : 'bg-gray-300 cursor-not-allowed'
-              }`}
-            >
-              Next
-            </button>
-          ) : step === 5 ? (
-            <button
-              type='submit'
-              disabled={!isStepValid()}
-              className={`px-6 py-2 rounded-2xl text-white ${
-                isStepValid()
-                  ? 'bg-rwa hover:opacity-90'
-                  : 'bg-gray-300 cursor-not-allowed'
-              }`}
-            >
-              Submit Service
-            </button>
-          ) : (
-            <span />
-          )}
-        </div>
+        {step < 6 && (
+          <div className='flex justify-between px-10 pb-5'>
+            {step > 0 ? (
+              <button
+                type='button'
+                onClick={prevStep}
+                className='px-6 py-2 border border-rwa text-rwa rounded-2xl hover:bg-rwa/10 transition'
+              >
+                Go Back
+              </button>
+            ) : (
+              <span />
+            )}
+            {step > 0 && step < 5 ? (
+              <button
+                type='button'
+                onClick={nextStep}
+                disabled={!isStepValid()}
+                className={`px-6 py-2 rounded-2xl text-white transition ${
+                  isStepValid()
+                    ? 'bg-rwa hover:opacity-90'
+                    : 'bg-gray-300 cursor-not-allowed'
+                }`}
+              >
+                Next
+              </button>
+            ) : step === 5 ? (
+              <button
+                type='submit'
+                disabled={!isStepValid()}
+                className={`px-6 py-2 rounded-2xl text-white ${
+                  isStepValid()
+                    ? 'bg-rwa hover:opacity-90'
+                    : 'bg-gray-300 cursor-not-allowed'
+                }`}
+              >
+                Submit Service
+              </button>
+            ) : (
+              <span />
+            )}
+          </div>
+        )}
       </motion.form>
     </section>
   )
@@ -246,7 +238,7 @@ export default function CreateServiceForm() {
                 being approved.
               </p>
             </div>
-            <div className='mt-auto px-10 pb-5'>
+            <div className='mt-auto px-10 pb-10'>
               <button
                 type='button'
                 onClick={nextStep}
@@ -383,15 +375,22 @@ export default function CreateServiceForm() {
 
               <div className='flex gap-4 mt-4'>
                 {['fixed', 'plans'].map((type) => (
-                  <label key={type} className='flex items-center gap-2'>
+                  <label
+                    key={type}
+                    className='flex items-center gap-2 cursor-pointer'
+                  >
                     <input
                       type='radio'
                       name='priceType'
                       value={type}
                       checked={form.priceType === type}
                       onChange={handleChange}
+                      className='peer hidden'
                     />
-                    {type === 'fixed' ? 'Fixed Price' : 'Based on plans'}
+                    <div className='w-5 h-5 border-2 rounded-full border-gray-300 peer-checked:border-4 peer-checked:border-rwa transition-all duration-150' />
+                    <span>
+                      {type === 'fixed' ? 'Fixed Price' : 'Based on plans'}
+                    </span>
                   </label>
                 ))}
               </div>
@@ -438,13 +437,27 @@ export default function CreateServiceForm() {
 
                   <div className='flex flex-wrap gap-4'>
                     {PRICE_PLANS.map((p) => (
-                      <label key={p} className='flex items-center gap-2'>
+                      <label
+                        key={p}
+                        className='flex items-center gap-2 cursor-pointer'
+                      >
                         <input
                           type='checkbox'
                           checked={form.plans[p].enabled}
                           onChange={() => handlePlanToggle(p)}
+                          className='peer hidden'
                         />
-                        {p}
+                        <div className='w-5 h-5 border-2 border-gray-300 rounded-md flex items-center justify-center peer-checked:bg-rwa peer-checked:border-rwa transition-all duration-150'>
+                          <FaCheck
+                            className={`text-white transition-opacity duration-150 ${
+                              form.plans[p].enabled
+                                ? 'opacity-100'
+                                : 'opacity-0'
+                            }`}
+                            size={12}
+                          />
+                        </div>
+                        <span>{p}</span>
                       </label>
                     ))}
                   </div>
@@ -559,7 +572,10 @@ export default function CreateServiceForm() {
                 </span>
                 <div className='flex gap-4 mt-2'>
                   {['Yes', 'No'].map((opt) => (
-                    <label key={opt} className='flex items-center gap-2'>
+                    <label
+                      key={opt}
+                      className='flex items-center gap-2 cursor-pointer'
+                    >
                       <input
                         type='radio'
                         name='faqEnabled'
@@ -572,8 +588,10 @@ export default function CreateServiceForm() {
                             faqs: [],
                           }))
                         }
+                        className='peer hidden'
                       />
-                      {opt}
+                      <div className='w-5 h-5 border-2 rounded-full border-gray-300 peer-checked:border-4 peer-checked:border-rwa transition-all duration-150' />
+                      <span>{opt}</span>
                     </label>
                   ))}
                 </div>
@@ -668,6 +686,36 @@ export default function CreateServiceForm() {
                 </div>
               </label>
             </div>
+          </div>
+        )
+
+      case 6:
+        return (
+          <div className='flex flex-col items-center justify-center flex-grow px-10 py-10 text-center'>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+              className='backdrop-blur-sm  flex items-center justify-center w-20 h-20 mx-auto rounded-full bg-rwa z-10 border border-r-rwa/30 border-b-rwa/30 border-gray-400 shadow-[0_3px_10px_rgb(0,0,100,0.2)]'
+            >
+              <AiOutlineCheck className='text-white' size={48} />
+            </motion.div>
+            <h3 className='text-2xl font-extrabold mt-4'>
+              Your Service was{' '}
+              <span className='text-rwa'>Successfully Submitted</span>
+            </h3>
+            <p className='text-sm text-gray-700 mt-2 max-w-md'>
+              Our team will review your service request to be listing in the
+              platform. The process will take approximately 24-36 hours. We will
+              let you know when your service goes live.
+            </p>
+            <button
+              type='button'
+              onClick={() => navigate('/dashboard')}
+              className='mt-4 px-6 py-1.5 rounded-2xl bg-rwa text-white font-medium hover:opacity-90 transition'
+            >
+              Go to dashboard
+            </button>
           </div>
         )
 
