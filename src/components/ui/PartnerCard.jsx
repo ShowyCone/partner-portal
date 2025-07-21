@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { FaExternalLinkAlt } from 'react-icons/fa'
+import { Link } from 'react-router'
 
 const PartnerCard = ({ partner, tags = [] }) => {
   return (
@@ -30,9 +31,12 @@ const PartnerCard = ({ partner, tags = [] }) => {
       {/* Description + call-to-action */}
       <p className='text-sm text-gray-700'>{partner.description}</p>
       <div className='flex justify-end'>
-        <button className='rounded-md border border-rwa px-4 py-1.5 text-sm font-medium text-rwa transition-colors hover:bg-rwa hover:text-white'>
+        <Link
+          to={`/partner/${partner.id}`}
+          className='rounded-md border border-rwa px-4 py-1.5 text-sm font-medium text-rwa transition-colors hover:bg-rwa hover:text-white'
+        >
           View Services
-        </button>
+        </Link>
       </div>
 
       {/* Separator */}

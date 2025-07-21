@@ -29,7 +29,7 @@ const ServiceCard = ({ service, index, variant = 'default' }) => {
   return (
     <Link to={`/service/${service.id}`} className='block'>
       <motion.div
-        className='rounded-lg bg-white shadow-xl flex flex-col transition-transform duration-300 hover:-translate-y-2 overflow-hidden'
+        className='rounded-lg bg-white shadow-xl flex flex-col transition-transform duration-300 hover:-translate-y-2'
         custom={index}
         initial='hidden'
         whileInView='visible'
@@ -99,7 +99,7 @@ const ServiceCard = ({ service, index, variant = 'default' }) => {
                 <p className='text-gray-600 text-sm line-clamp-2'>
                   {service.description}
                 </p>
-                <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-sm bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none z-10'>
+                <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-sm bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 pointer-events-none z-20'>
                   {service.description}
                   <div className='absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-900' />
                 </div>
