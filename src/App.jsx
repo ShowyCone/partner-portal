@@ -6,6 +6,7 @@ import AboutUs from './pages/aboutus/AboutUs'
 import Discover from './pages/discover/Discover'
 import NotificationBanner from './components/ui/NotificationBanner'
 import Login from './pages/auth/Login'
+import SignUp from './pages/auth/SignUp'
 import Apply from './pages/provider/Apply'
 import SingleService from './pages/SingleService'
 import CreateServiceForm from './pages/create-service/CreateServiceForm'
@@ -22,6 +23,7 @@ function App() {
         <Route path='/discover' element={<Discover />} />
         <Route path='/about' element={<AboutUs />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<SignUp />} />
         <Route path='/provider/login' element={<ProviderLogin />} />
         <Route path='/apply' element={<Apply />} />
         <Route path='/service/:id' element={<SingleService />} />
