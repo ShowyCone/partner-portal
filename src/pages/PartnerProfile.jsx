@@ -217,12 +217,12 @@ const PartnerProfile = ({ partner = defaultPartner }) => {
       <motion.div
         variants={fadeInUp}
         custom={4}
-        className='flex flex-col lg:flex-row justify-between gap-8 mt-6'
+        className='flex flex-col lg:flex-row justify-between gap-8 mt-6 lg:items-stretch'
       >
         {/* Media Carousel */}
-        <div className='relative'>
+        <div className='relative w-full lg:w-[55%]'>
           {/* Main image / video */}
-          <div className='rounded-xl overflow-hidden shadow-md relative h-64 sm:h-80 w-full'>
+          <div className='rounded-xl overflow-hidden shadow-md relative aspect-video w-full'>
             {currentMedia.type === 'video' ? (
               <div className='relative h-full'>
                 <video
@@ -356,39 +356,41 @@ const PartnerProfile = ({ partner = defaultPartner }) => {
         </div>
 
         {/* Stats */}
-        <div className='flex flex-col gap-6 min-w-1/3 h-full'>
-          {/* Closed Deals */}
-          <div>
-            <p className='text-3xl sm:text-4xl font-bold text-rwa'>
-              +{computedStats.closedClients}
-            </p>
-            <p className='text-sm text-gray-500 uppercase tracking-wide'>
-              Closed Deals
-            </p>
-          </div>
-          <div className='h-px bg-gray-200 my-1' />
-
-          {/* Rated */}
-          <div>
-            <div className='flex items-center gap-1'>
-              <FaStar className='text-rwa text-3xl' />
+        <div className='flex flex-col justify-between w-[35%]'>
+          <div className='flex flex-col gap-4'>
+            {/* Closed Deals */}
+            <div>
               <p className='text-3xl sm:text-4xl font-bold text-rwa'>
-                {computedStats.rating}
+                +{computedStats.closedClients}
+              </p>
+              <p className='text-sm text-gray-500 uppercase tracking-wide'>
+                Closed Deals
               </p>
             </div>
-            <p className='text-sm text-gray-500 uppercase tracking-wide'>
-              ({computedStats.ratingCount}) Reviews
-            </p>
-          </div>
-          <div className='h-px bg-gray-200 my-1' />
-          {/* Services */}
-          <div>
-            <p className='text-3xl sm:text-4xl font-bold text-rwa'>
-              {computedStats.services}
-            </p>
-            <p className='text-sm text-gray-500 uppercase tracking-wide'>
-              Crypto Services
-            </p>
+            <div className='h-px bg-gray-200 my-1' />
+
+            {/* Rated */}
+            <div>
+              <div className='flex items-center gap-1'>
+                <FaStar className='text-rwa text-3xl' />
+                <p className='text-3xl sm:text-4xl font-bold text-rwa'>
+                  {computedStats.rating}
+                </p>
+              </div>
+              <p className='text-sm text-gray-500 uppercase tracking-wide'>
+                ({computedStats.ratingCount}) Reviews
+              </p>
+            </div>
+            <div className='h-px bg-gray-200 my-1' />
+            {/* Services */}
+            <div>
+              <p className='text-3xl sm:text-4xl font-bold text-rwa'>
+                {computedStats.services}
+              </p>
+              <p className='text-sm text-gray-500 uppercase tracking-wide'>
+                Crypto Services
+              </p>
+            </div>
           </div>
 
           {/* Button */}
