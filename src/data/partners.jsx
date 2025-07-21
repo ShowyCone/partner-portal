@@ -58,6 +58,7 @@ const partners = [
       'CryptoDevs is a leading blockchain development firm specializing in smart-contract engineering and infrastructure. For more than eight years we have helped startups and enterprises launch secure, scalable dApps on EVM networks, optimizing gas fees and reinforcing auditability. Our team of full-stack engineers, cryptographers and security specialists blends agile development with exhaustive audits to guarantee maximum reliability for every project.',
     logo: '/rwamainlogo.svg',
     media: [{ type: 'image', src: '/container.webp' }],
+    website: 'https://cryptodevs.io',
   },
   {
     id: 'de2b32d4-c003-4327-9f14-5eb5adb56c1f',
@@ -67,6 +68,7 @@ const partners = [
       'SecureChain focuses on vulnerability analysis and security architecture for Web3 protocols. Our analysts perform automated and manual audits, penetration tests and threat modeling to ensure that digital assets remain protected against sophisticated exploits. We collaborate with DeFi platforms and exchanges worldwide, delivering detailed reports and actionable recommendations that harden attack surfaces without compromising user experience.',
     logo: '/rwamainlogo.svg',
     media: [{ type: 'image', src: '/rectangle.webp' }],
+    website: 'https://securechain.io',
   },
   {
     id: 'a9c78187-e359-4b2a-9a77-4f9a45e23c07',
@@ -76,6 +78,7 @@ const partners = [
       'PixelPerfect merges aesthetics and usability to craft user interfaces that drive adoption of decentralized applications. From wireframes to interactive prototypes, our user-centric process delivers intuitive flows and full accessibility without sacrificing brand identity. We have collaborated with more than 120 Web3 projects, designing marketplaces, dashboards and wallets for both mobile and desktop.',
     logo: '/rwamainlogo.svg',
     media: [{ type: 'image', src: '/rectangle_9.webp' }],
+    website: 'https://pixelperfect.io',
   },
   {
     id: '2dda0ec5-6806-4bf4-ab80-f673aaa1c1a5',
@@ -85,6 +88,7 @@ const partners = [
       'TokenFactory helps traditional enterprises tokenize real-world assets and issue custom ERC-20 tokens with full regulatory compliance. Our legal-tech team develops audited smart contracts and manages the entire token lifecycle, from tokenomics definition to listing on DEXs and CEXs. With over 50 successful launches, we provide liquidity, transparency and decentralized governance from day one.',
     logo: '/rwamainlogo.svg',
     media: [{ type: 'image', src: '/rectangle.webp' }],
+    website: 'https://tokenfactory.io',
   },
 ]
 

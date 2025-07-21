@@ -12,6 +12,7 @@ import SingleService from './pages/SingleService'
 import CreateServiceForm from './pages/create-service/CreateServiceForm'
 import PartnerDashboard from './pages/PartnerDashboard'
 import ProviderLogin from './pages/provider/ProviderLogin'
+import Partners from './pages/partners/Partners'
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path='/service/:id' element={<SingleService />} />
         <Route path='/create-service' element={<CreateServiceForm />} />
         <Route path='/partner/:id' element={<PartnerDashboard />} />
+        <Route path='/partners' element={<Partners />} />
       </Routes>
       <Footer />
     </>
