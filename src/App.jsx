@@ -13,6 +13,7 @@ import CreateServiceForm from './pages/create-service/CreateServiceForm'
 import PartnerDashboard from './pages/PartnerDashboard'
 import ProviderLogin from './pages/provider/ProviderLogin'
 import Partners from './pages/partners/Partners'
+import ContactUs from './pages/contactUs/ContactUs'
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path='/create-service' element={<CreateServiceForm />} />
         <Route path='/partner/:id' element={<PartnerDashboard />} />
         <Route path='/partners' element={<Partners />} />
+        <Route path='/contactUs' element={<ContactUs />} />
       </Routes>
       <Footer />
     </>
