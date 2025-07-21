@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import partnersData from '../../data/partners'
 import { motion } from 'framer-motion'
 import { FaRegHeart, FaStar } from 'react-icons/fa'
 import { Link } from 'react-router'
@@ -19,10 +20,14 @@ const cardVariants = {
 const ServiceCard = ({ service, index, variant = 'default' }) => {
   const [isFavorite, setIsFavorite] = useState(service.favorite || false)
 
+  // Retrieve partner name via service.partnerId
+  const partner = partnersData.find((p) => p.id === service.partnerId)
+  const partnerName = partner ? partner.name : 'Unknown Partner'
+
   const isSuggested = variant === 'suggested'
 
   return (
-    <Link to={`/service?id=${service.id}`} className='block'>
+    <Link to={`/service/${service.id}`} className='block'>
       <motion.div
         className='rounded-lg bg-white shadow-xl flex flex-col transition-transform duration-300 hover:-translate-y-2 overflow-hidden'
         custom={index}
@@ -104,7 +109,16 @@ const ServiceCard = ({ service, index, variant = 'default' }) => {
 
           {isSuggested ? null : (
             <div className='border-t border-gray-200 mt-4 pt-3 flex justify-between items-center text-sm text-gray-500'>
-              <span>{service.siteName}</span>
+              {partner ? (
+                <Link
+                  to={`/partner/${partner.id}`}
+                  className='hover:underline hover:text-rwa'
+                >
+                  {partnerName}
+                </Link>
+              ) : (
+                <span>{partnerName}</span>
+              )}
               <a
                 href={service.siteUrl}
                 target='_blank'

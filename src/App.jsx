@@ -9,6 +9,7 @@ import Login from './pages/auth/Login'
 import Apply from './pages/provider/Apply'
 import SingleService from './pages/SingleService'
 import CreateServiceForm from './pages/create-service/CreateServiceForm'
+import PartnerDashboard from './pages/PartnerDashboard'
 
 function App() {
   return (
@@ -21,8 +22,9 @@ function App() {
         <Route path='/about' element={<AboutUs />} />
         <Route path='/login' element={<Login />} />
         <Route path='/apply' element={<Apply />} />
-        <Route path='/service' element={<SingleService />} />
+        <Route path='/service/:id' element={<SingleService />} />
         <Route path='/create-service' element={<CreateServiceForm />} />
+        <Route path='/partner/:id' element={<PartnerDashboard />} />
       </Routes>
       <Footer />
     </>

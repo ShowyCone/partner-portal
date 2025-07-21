@@ -35,14 +35,17 @@ const AllServices = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Extend mock data up to 20 items for pagination testing
+  // Duplicate the base list to simulate pagination, while keeping the original UUID id. We add a separate cloneIdx to guarantee unique React keys.
   const extendedServices = useMemo(() => {
     const target = 20
     const result = []
+    let cloneIdx = 0
     while (result.length < target) {
       servicesData.forEach((service) => {
-        if (result.length < target)
-          result.push({ ...service, id: result.length + 1 })
+        if (result.length < target) {
+          result.push({ ...service, cloneIdx })
+          cloneIdx += 1
+        }
       })
     }
     return result
@@ -66,7 +69,7 @@ const AllServices = () => {
         list.sort((a, b) => a.price - b.price)
         break
       case 'Recent':
-        list.sort((a, b) => b.id - a.id)
+        list.sort((a, b) => b.cloneIdx - a.cloneIdx)
         break
       case 'Popular':
       default:
@@ -148,13 +151,17 @@ const AllServices = () => {
       >
         {currentServices.map((service, index) => (
           <motion.div
-            key={service.id}
+            key={`${service.id}-${service.cloneIdx ?? index}`}
             variants={{
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0 },
             }}
           >
-            <ServiceCard service={service} index={index} />
+            <ServiceCard
+              key={`${service.id}-${service.cloneIdx ?? index}`}
+              service={service}
+              index={index}
+            />
           </motion.div>
         ))}
       </motion.div>

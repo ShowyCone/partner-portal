@@ -13,8 +13,9 @@ import {
   FaCcMastercard,
   FaSearch,
 } from 'react-icons/fa'
-import { useLocation } from 'react-router'
+import { useParams, useNavigate, Link } from 'react-router'
 import servicesData from '../data/services'
+import partnersData from '../data/partners'
 import ServiceCard from '../components/ui/ServiceCard'
 
 const SearchBar = () => (
@@ -36,17 +37,33 @@ const SearchBar = () => (
 )
 
 const SingleService = () => {
-  const { search } = useLocation()
-  const searchParams = new URLSearchParams(search)
-  const serviceId = parseInt(searchParams.get('id') || '1', 10)
+  const { id: serviceId } = useParams()
+  const navigate = useNavigate()
 
-  const service =
-    servicesData.find((s) => s.id === serviceId) || servicesData[0]
+  // Detect numeric legacy IDs and map them to current UUID records
+  const isLegacyNumeric = /^\d+$/.test(serviceId)
+
+  // Helper to find service
+  const getService = () => {
+    if (isLegacyNumeric) {
+      // Legacy IDs were 1-based; convert to zero-based index
+      const idx = parseInt(serviceId, 10) - 1
+      return servicesData[idx]
+    }
+    return servicesData.find((s) => s.id === serviceId)
+  }
+
+  const service = getService() || servicesData[0]
+
+  // If legacy numeric ID, redirect once to the canonical UUID URL
+  if (isLegacyNumeric && service && service.id !== serviceId) {
+    navigate(`/service/${service.id}`, { replace: true })
+  }
   const providerServices = servicesData.filter(
-    (s) => s.siteName === service.siteName && s.id !== service.id
+    (s) => s.partnerId === service.partnerId && s.id !== service.id
   )
   const otherServices = servicesData
-    .filter((s) => s.siteName !== service.siteName)
+    .filter((s) => s.partnerId !== service.partnerId)
     .sort(() => 0.5 - Math.random())
     .slice(0, 2)
 
@@ -78,6 +95,9 @@ const SingleService = () => {
     setOpenFaq(openFaq === idx ? null : idx)
   }
 
+  const partner = partnersData.find((p) => p.id === service.partnerId)
+  const partnerName = partner ? partner.name : 'Unknown Partner'
+
   return (
     <section className='container mx-auto px-4 py-12'>
       <div className='flex justify-center md:justify-start'>
@@ -90,7 +110,12 @@ const SingleService = () => {
           <span>/</span>
           <span>{service.tag}</span>
           <span>/</span>
-          <span className='text-rwa'>{service.siteName}</span>
+          <Link
+            to={`/partner/${partner.id}`}
+            className='text-rwa hover:underline'
+          >
+            {partnerName}
+          </Link>
         </div>
 
         <div className='flex items-center gap-3 text-lg text-gray-500'>
@@ -119,11 +144,14 @@ const SingleService = () => {
         <div className='flex flex-col gap-10 lg:col-span-2'>
           <h1 className='text-3xl font-bold'>{service.title}</h1>
 
-          <div className='flex items-center gap-4'>
+          <Link
+            to={`/partner/${partner.id}`}
+            className='flex items-center gap-4 hover:opacity-90'
+          >
             {service.image ? (
               <img
                 src={service.image}
-                alt={service.siteName}
+                alt={partnerName}
                 className='h-14 w-14 rounded-full object-cover'
               />
             ) : (
@@ -133,7 +161,7 @@ const SingleService = () => {
             )}
 
             <div>
-              <p className='font-semibold'>{service.siteName}</p>
+              <p className='font-semibold'>{partnerName}</p>
               <div className='flex items-center gap-1 text-rwa'>
                 {Array(5)
                   .fill(0)
@@ -152,7 +180,7 @@ const SingleService = () => {
                 </span>
               </div>
             </div>
-          </div>
+          </Link>
 
           <div className='space-y-3'>
             <h2 className='text-xl font-bold text-rwa'>About this service</h2>
@@ -210,7 +238,7 @@ const SingleService = () => {
 
           <div className='space-y-6'>
             <h2 className='text-xl font-bold text-rwa'>
-              More services from {service.siteName}
+              More services from {partnerName}
             </h2>
             <div className='grid gap-6 sm:grid-cols-2 md:grid-cols-3'>
               {providerServices.map((s) => (
@@ -256,14 +284,17 @@ const SingleService = () => {
               ))}
             </div>
 
-            <div className='flex gap-4'>
+            <Link
+              to={`/partner/${partner.id}`}
+              className='flex gap-4 hover:opacity-90'
+            >
               <img
                 src={service.image}
-                alt={service.title}
+                alt={partnerName}
                 className='h-20 w-20 rounded-md object-cover'
               />
               <div className='space-y-1'>
-                <p className='text-sm font-semibold'>{service.siteName}</p>
+                <p className='text-sm font-semibold'>{partnerName}</p>
                 <p className='text-sm text-rwa'>{service.title}</p>
                 <p className='text-lg font-bold'>${service.price}</p>
                 <div className='flex items-center gap-1 text-sm text-rwa'>
@@ -285,7 +316,7 @@ const SingleService = () => {
                   {service.tag}
                 </span>
               </div>
-            </div>
+            </Link>
 
             <hr className='my-2 text-gray-200' />
 

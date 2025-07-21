@@ -1,6 +1,7 @@
 const servicesData = [
   {
-    id: 1,
+    id: 'b3e1ef5a-947f-408b-8d46-962f8c3d3c31',
+    partnerId: '1e693596-ebca-4c73-9e36-d2026e0e5c5d',
     title: 'Smart Contract Development',
     rating: 4.9,
     reviews: 112,
@@ -8,7 +9,6 @@ const servicesData = [
     tag: 'Solidity',
     description:
       'Creation and auditing of smart contracts on the Ethereum network to ensure security and efficiency.',
-    siteName: 'CryptoDevs',
     siteUrl: '#',
     image: '/container.webp',
     includes: [
@@ -19,7 +19,8 @@ const servicesData = [
     favorite: false,
   },
   {
-    id: 2,
+    id: '3e6a7d9c-2fb2-45ee-9cfa-3dfec66f5341',
+    partnerId: 'de2b32d4-c003-4327-9f14-5eb5adb56c1f',
     title: 'Web3 Security Audit',
     rating: 5.0,
     reviews: 87,
@@ -27,7 +28,6 @@ const servicesData = [
     tag: 'Security',
     description:
       'Comprehensive vulnerability analysis of dApps and protocols to prevent attacks and protect digital assets.',
-    siteName: 'SecureChain',
     siteUrl: '#',
     image: '/rectangle.webp',
     includes: [
@@ -38,7 +38,8 @@ const servicesData = [
     favorite: true,
   },
   {
-    id: 3,
+    id: '1dc3fdd4-e93e-4f6a-9ed4-67c2d78a7b27',
+    partnerId: 'a9c78187-e359-4b2a-9a77-4f9a45e23c07',
     title: 'dApp Interface Design',
     rating: 4.8,
     reviews: 64,
@@ -46,7 +47,6 @@ const servicesData = [
     tag: 'UI/UX',
     description:
       'Design of intuitive and attractive user interfaces for decentralized applications, optimized for adoption.',
-    siteName: 'PixelPerfect',
     siteUrl: '#',
     image: '/rectangle_9.webp',
     includes: [
@@ -57,7 +57,8 @@ const servicesData = [
     favorite: false,
   },
   {
-    id: 4,
+    id: '8c46e2c5-6f7b-4b23-96df-574c88b54277',
+    partnerId: '1e693596-ebca-4c73-9e36-d2026e0e5c5d',
     title: 'Oracle Integration',
     rating: 4.7,
     reviews: 51,
@@ -65,7 +66,6 @@ const servicesData = [
     tag: 'Chainlink',
     description:
       'Connecting smart contracts with real-world data through decentralized oracles like Chainlink.',
-    siteName: 'CryptoDevs',
     siteUrl: '#',
     image: '/container.webp',
     includes: [
@@ -76,7 +76,8 @@ const servicesData = [
     favorite: false,
   },
   {
-    id: 5,
+    id: '2bfd177f-271e-4fa0-86a8-7e3b58dce614',
+    partnerId: '2dda0ec5-6806-4bf4-ab80-f673aaa1c1a5',
     title: 'ERC-20 Token Creation',
     rating: 4.9,
     reviews: 143,
@@ -84,7 +85,6 @@ const servicesData = [
     tag: 'Tokens',
     description:
       'Development and deployment of custom ERC-20 standard fungible tokens for projects and ecosystems.',
-    siteName: 'TokenFactory',
     siteUrl: '#',
     image: '/rectangle_9.webp',
     includes: [
@@ -95,7 +95,8 @@ const servicesData = [
     favorite: true,
   },
   {
-    id: 6,
+    id: '993ad1cd-d8b4-4dfd-8a9a-1dcead967e74',
+    partnerId: 'de2b32d4-c003-4327-9f14-5eb5adb56c1f',
     title: 'Blockchain Consulting',
     rating: 5.0,
     reviews: 99,
@@ -103,7 +104,6 @@ const servicesData = [
     tag: 'Strategy',
     description:
       'Strategic advisory for companies looking to implement blockchain and Web3 solutions in their business models.',
-    siteName: 'SecureChain',
     siteUrl: '#',
     image: '/rectangle.webp',
     includes: [
@@ -114,7 +114,8 @@ const servicesData = [
     favorite: false,
   },
   {
-    id: 7,
+    id: 'e027105c-19aa-4cc0-b4d2-e406963c7a22',
+    partnerId: 'a9c78187-e359-4b2a-9a77-4f9a45e23c07',
     title: 'NFT Marketplace Development',
     rating: 4.8,
     reviews: 73,
@@ -122,7 +123,6 @@ const servicesData = [
     tag: 'NFT',
     description:
       'Building marketplace platforms for buying, selling and exchanging Non-Fungible Tokens (NFTs).',
-    siteName: 'PixelPerfect',
     siteUrl: '#',
     image: '/container.webp',
     includes: [
@@ -133,7 +133,8 @@ const servicesData = [
     favorite: false,
   },
   {
-    id: 8,
+    id: 'd1b4752a-8f57-4f38-8568-f4b5c6783372',
+    partnerId: '2dda0ec5-6806-4bf4-ab80-f673aaa1c1a5',
     title: 'DeFi Treasury Management',
     rating: 4.9,
     reviews: 58,
@@ -141,7 +142,6 @@ const servicesData = [
     tag: 'DeFi',
     description:
       'Strategies and tools for optimized management of digital assets in decentralized finance protocols.',
-    siteName: 'TokenFactory',
     siteUrl: '#',
     image: '/rectangle.webp',
     includes: [
@@ -152,5 +152,10 @@ const servicesData = [
     favorite: false,
   },
 ]
+
+// Remove static siteName to avoid duplication; partner name will be looked up dynamically
+servicesData.forEach((svc) => {
+  if ('siteName' in svc) delete svc.siteName
+})
 
 export default servicesData

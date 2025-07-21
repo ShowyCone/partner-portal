@@ -26,7 +26,9 @@ const ServicesSection = () => {
       case 'popular':
         return services.sort((a, b) => b.rating - a.rating)
       case 'recent':
-        return services.sort((a, b) => b.id - a.id)
+        return services // since we lack timestamps, treat the original order as recency
+          .map((s, i) => ({ ...s, _idx: i }))
+          .sort((a, b) => b._idx - a._idx)
       case 'price':
         return services.sort((a, b) => a.price - b.price)
       default:
