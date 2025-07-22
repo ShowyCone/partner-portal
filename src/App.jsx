@@ -13,7 +13,11 @@ import CreateServiceForm from './pages/create-service/CreateServiceForm'
 import PartnerDashboard from './pages/PartnerDashboard'
 import ProviderLogin from './pages/provider/ProviderLogin'
 import Partners from './pages/partners/Partners'
+<<<<<<< HEAD
 import ContactUs from './pages/contactUs/ContactUs'
+=======
+import ScheduleMeeting from './pages/meeting/ScheduleMeeting'
+>>>>>>> 1671e7e4268ded6d442a01740cd959f1dea40f33
 
 function App() {
   return (
@@ -32,7 +36,11 @@ function App() {
         <Route path='/create-service' element={<CreateServiceForm />} />
         <Route path='/partner/:id' element={<PartnerDashboard />} />
         <Route path='/partners' element={<Partners />} />
+<<<<<<< HEAD
         <Route path='/contactUs' element={<ContactUs />} />
+=======
+        <Route path='/schedule-meeting' element={<ScheduleMeeting />} />
+>>>>>>> 1671e7e4268ded6d442a01740cd959f1dea40f33
       </Routes>
       <Footer />
     </>
